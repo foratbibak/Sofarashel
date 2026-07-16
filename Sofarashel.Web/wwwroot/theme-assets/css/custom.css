@@ -1,0 +1,9 @@
+/* Write your code here */
+/*# sourceMappingURL=custom.css.map */
+.swiper-pagination-bullet-active {
+    opacity: var(--swiper-pagination-bullet-opacity, 1);
+    background-image: linear-gradient(180deg, #10B981 0%, #06B6D4 100%)!important;
+}
+.page-header .page-header--top {
+    background-image: linear-gradient(180deg, #10B981 0%, #06B6D4 100%)!important;
+}

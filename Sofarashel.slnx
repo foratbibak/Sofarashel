@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/Application/">
+    <Project Path="Sofarashel.Application/Sofarashel.Application.csproj" />
+  </Folder>
+  <Folder Name="/Domain/">
+    <Project Path="Sofarashel.Domain/Sofarashel.Domain.csproj" />
+  </Folder>
+  <Folder Name="/Infra.Data/">
+    <Project Path="sofarashel.Infra.Data/Sofarashel.Infra.Data.csproj" />
+  </Folder>
+  <Folder Name="/Infra.Ioc/">
+    <Project Path="Sofarashel.Infra.Ioc/Sofarashel.Infra.Ioc.csproj" />
+  </Folder>
+  <Folder Name="/Presentations/">
+    <Project Path="Sofarashel.Web/Sofarashel.Web.csproj" />
+  </Folder>
+</Solution>

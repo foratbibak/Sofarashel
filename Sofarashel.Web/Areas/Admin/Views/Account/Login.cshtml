@@ -1,0 +1,97 @@
+﻿@using Sofarashel.ViewModels.Account
+@model LoginViewModel
+@{
+    ViewData["Title"] = "ورود به پنل ادمین ";
+}
+
+<link rel="stylesheet" href="~/css/Custom.css" />
+
+<!-- شروع محفظه اصلی صفحه لاگین -->
+<div class="login-page-container">
+    <!-- کارت لاگین -->
+    <div class="login-card">
+        <!-- هدر کارت با آیکون و عنوان -->
+        <div class="login-card-header">
+            <div class="login-icon">
+                <i class="fas fa-sign-in-alt"></i>
+            </div>
+            <h2>خوش آمدید</h2>
+            <p>برای ورود به حساب کاربری، اطلاعات خود را وارد کنید</p>
+        </div>
+
+        <!-- بدنه کارت شامل فرم -->
+        <div class="login-card-body">
+            <form asp-action="Login" class="auth-form" method="post">
+                <!-- برگرداندن آدرس برگشت -->
+                <input type="hidden" name="ReturnUrl" value="@ViewBag.ReturnUrl" />
+
+                <!-- نمایش خلاصه خطاهای اعتبارسنجی -->
+                <div asp-validation-summary="ModelOnly" class="error-summary"></div>
+
+                <!-- هشدار عدم فعال بودن ایمیل کاربر -->
+                @if (ViewBag.UserNotActive != null)
+                {
+                    <div class="alert-warning-modern">
+                        <i class="fas fa-envelope-open-text"></i>
+                        <p>ایمیل شما فعال نشده است</p>
+                    </div>
+                }
+
+                <!-- فیلد نام کاربری یا ایمیل -->
+                <div class="form-field">
+                    <label asp-for="UserName" class="field-label">
+                        <i class="fas fa-user-circle"></i>
+                        <span>نام کاربری</span>
+                    </label>
+                    <div class="input-container">
+                        <input asp-for="UserName" class="field-input" placeholder="نام کاربری  " />
+                    </div>
+                    <span asp-validation-for="UserName" class="field-error"></span>
+                </div>
+
+                <!-- فیلد رمز عبور با دکمه نمایش رمز -->
+                <div class="form-field">
+                    <label asp-for="Password" class="field-label">
+                        <i class="fas fa-lock"></i>
+                        <span>رمز عبور</span>
+                    </label>
+                    <div class="input-container">
+                        <input asp-for="Password" class="field-input" type="password" placeholder="رمز عبور" />
+                        <i class="fas fa-eye-slash password-toggle"></i>
+                    </div>
+                    <span asp-validation-for="Password" class="field-error"></span>
+                </div>
+
+
+                <!-- گزینه‌های مرا به خاطر بسپار و فراموشی رمز -->
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input asp-for="RememberMe" type="checkbox" />
+                        <span>مرا به خاطر بسپار</span>
+                    </label>
+                    <a asp-area="UserPanel" asp-controller="Profile" asp-action="ChangePassword" class="forgot-link">رمز را فراموش کردم</a>
+                </div>
+
+                <!-- دکمه ورود -->
+                <button type="submit" class="submit-button">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>ورود</span>
+                </button>
+
+                <!-- فوتر با لینک ثبت نام و قوانین -->
+                <div class="auth-footer">
+                    <p class="signup-text">
+                        حساب ندارید؟ <a asp-action="Register" class="signup-link">ثبت‌نام</a>
+                    </p>
+                    <small class="terms-text">
+                        <a href="#" class="terms-link">شرایط و قوانین</a> را می‌پذیرم
+                    </small>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
