@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Sofarashel.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using User_Login.Models.User;
 
 namespace Bibaket.Ifra.Data.Configuration.UserConfig
 {

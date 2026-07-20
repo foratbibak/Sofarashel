@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using User_Login.Enum.User;
-using User_Login.ViewModels.User;
+using Sofarashel.Enum.User;
+using Sofarashel.ViewModels.User;
 
-namespace User_Login.ViewModels.Users
+namespace Sofarashel.ViewModels.Users
 {
-    public class UserFillterViewModel
+    public class AdminUserFillterViewModel
     {
         [DisplayName("نام")]
         public string? FirstName { get; set; }

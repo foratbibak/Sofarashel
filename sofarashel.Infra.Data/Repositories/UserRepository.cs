@@ -5,8 +5,20 @@ using Sofarashel.Models.User;
 
 namespace Sofarashel.Data.Implementation
 {
-    public class UserRepository(DBConnection context) : IUserRepository
+    public class UserRepository(GallaryDbcontext context) : IUserRepository
     {
+        public async Task AddUserToRole(int UserId, List<int> roleIds)
+        {
+            foreach (int roleId in roleIds)
+            {
+                context.UserInRoles.Add(new Domain.Models.Roles.UserInRoles()
+                {
+                    RoleId = roleId,
+                    UserId = UserId,
+                });
+            }
+        }
+
         public async Task CreateAsync(User user)
         {
             await context.Users.AddAsync(user);
@@ -46,9 +58,16 @@ namespace Sofarashel.Data.Implementation
 
         }
 
-        public Task<User?> GetUserByUserName(string userName)
+        public async Task<User?> GetUserByUserName(string userName)
+        {
+            return await context.Users.SingleOrDefaultAsync(u => u.UserName == userName);  
+        }
+
+        public Task<User?> GetUserFullDataAsync(int userId)
         {
             throw new NotImplementedException();
+            //return await context.Users.IgnoreQueryFilters().Include(u => u.UserInRole)
+            //            .ThenInclude(u => u.Role).SingleOrDefaultAsync(u => u.Id == userId);
         }
 
         public async Task<bool> IsExsitUserNameAsync(string userName)

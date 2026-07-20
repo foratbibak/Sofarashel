@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Sofarashel.Data;
 using Sofarashel.Infra.Ioc;
 using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
-using User_Login.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +24,7 @@ builder.Services.AddSingleton<HtmlEncoder>(HtmlEncoder.Create(allowedRanges: new
 #endregion
 
 #region Add Db Context
-builder.Services.AddDbContext<DBConnection>(options =>
+builder.Services.AddDbContext<GallaryDbcontext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection"));
 });

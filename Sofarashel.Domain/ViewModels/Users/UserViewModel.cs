@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace User_Login.ViewModels.User
+namespace Sofarashel.ViewModels.User
 {
     public class UserViewModel
     {
@@ -14,6 +14,8 @@ namespace User_Login.ViewModels.User
 
         [DisplayName("نام کاربری")]
         public string UserName { get; set; }
+        [DisplayName("کلمه عبور")]
+        public string Password { get; set; }
 
         [DisplayName("فعال/غیرفعال")]
         public bool IsActive { get; set; }

@@ -1,8 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Bibaket.Application.Services.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 using Sofarashel.Application.Services.Implementation;
 using Sofarashel.Application.Services.Interfaces;
 using Sofarashel.Data.Contract;
 using Sofarashel.Data.Implementation;
+using Sofarashel.Domain.Contracts;
+using Sofarashel.Infra.Data.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,11 +19,15 @@ namespace Sofarashel.Infra.Ioc
         {
             #region Repositories
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+
             #endregion
 
             #region Services
             services.AddScoped<IUserServices, UserServices>();
             services.AddScoped<IAccountServices, AccountServices>();
+            services.AddScoped<IRoleServices, RoleServices>();
+
             #endregion
         }
     }

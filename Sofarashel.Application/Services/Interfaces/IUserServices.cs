@@ -2,13 +2,21 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using User_Login.ViewModels.Users;
+using Sofarashel.Domain.ViewModels.User;
+using Sofarashel.Enum.User;
+using Sofarashel.ViewModels.Users;
 
 namespace Sofarashel.Application.Services.Interfaces
 {
     public interface IUserServices
     {
-        Task<UserFillterViewModel> AdminFilterAsync(UserFillterViewModel model);
+        Task<AdminUserFillterViewModel> AdminFilterAsync(AdminUserFillterViewModel model);
+
+        Task<CreateUserResult> CreateUserInAdminAsync(CreateUserViewModel model);
+
+        Task<EditUserViewModel> GetUserForEditAsync(int userId);
+
+
 
     }
 }

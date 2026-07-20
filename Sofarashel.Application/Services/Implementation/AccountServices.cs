@@ -2,11 +2,11 @@
 using Sofarashel.Application.Services.Interfaces;
 using Sofarashel.Data.Contract;
 using Sofarashel.Domain.Enums.Account;
+using Sofarashel.Models.User;
 using Sofarashel.ViewModels.Account;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using User_Login.Models.User;
 
 namespace Sofarashel.Application.Services.Implementation
 {
@@ -20,9 +20,10 @@ namespace Sofarashel.Application.Services.Implementation
         public async Task<LoginUserResult> LoginUserAsync(LoginViewModel model)
         {
             var user = await _userRepository.GetUserByUserName(model.UserName);
+            if (user == null)
                 return LoginUserResult.NotFound;
 
-            if (!PasswordHelper.VerifyPassword(model.UserName, user.Password))
+            if (!PasswordHelper.VerifyPassword(model.Password, user.Password))
                 return LoginUserResult.NotFound;
 
             return LoginUserResult.Success;

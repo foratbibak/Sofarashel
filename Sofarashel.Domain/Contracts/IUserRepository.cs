@@ -10,6 +10,12 @@ namespace Sofarashel.Data.Contract
         Task<IQueryable<User>> FilterAsync();
 
         Task<IEnumerable<User>> GetAllUserAsync();
+        Task<User?> GetUserFullDataAsync(int userId);
+
+
+
+
+
         Task<User?> GetUserbyIdAsync(int userId);
 
         Task<User?>GetUserByUserName(string userName);
@@ -22,9 +28,17 @@ namespace Sofarashel.Data.Contract
 
         Task DeleteAsync(int UserId);
 
+
+        Task AddUserToRole(int UserId, List<int> roleIds);
+
+
+
         Task ReturnUserDeAcitve(User user);
 
         Task UserDeAcitve(int userId);
+
+
+
 
         Task<bool> IsExsitUserNameAsync(string userName);
 

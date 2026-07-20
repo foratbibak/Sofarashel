@@ -1,9 +1,9 @@
 ﻿using Sofarashel.Domain.Enums.Account;
+using Sofarashel.Models.User;
 using Sofarashel.ViewModels.Account;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using User_Login.Models.User;
 
 namespace Sofarashel.Application.Services.Interfaces
 {

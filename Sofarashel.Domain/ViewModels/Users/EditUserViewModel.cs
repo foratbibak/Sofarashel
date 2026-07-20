@@ -1,12 +1,15 @@
-﻿using Sofarashel.Domain.Models.Roles;
+﻿using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Data;
+using System.Text;
 
-namespace Sofarashel.ViewModels.Users
+namespace Sofarashel.Domain.ViewModels.User
 {
-    public class CreateUserViewModel
+    public class EditUserViewModel
     {
+        public int Id { get; set; }
         [DisplayName("نام")]
         public string? FirstName { get; set; }
 
@@ -16,14 +19,13 @@ namespace Sofarashel.ViewModels.Users
         [DisplayName("نام کاربری")]
         [Required(ErrorMessage = "لطفا {0} را وارد فرمایید")]
         public string UserName { get; set; }
-
-        [DisplayName("کلمه عبور")]
-        [Required(ErrorMessage = "لطفا {0} را وارد فرمایید")]
-        public string Password { get; set; }
-
         [DisplayName("فعال/غیرفعال")]
         public bool IsActive { get; set; }
-        public IEnumerable<Role>? Roles { get; set; }
-        public List<int>? UserSelectedRoles { get; set; }
+
+        [DisplayName("حذف شده؟")]
+        public bool IsDelete { get; set; }
+
+        //public IEnumerable<Role>? Roles { get; set; }
+        //public List<int>? UserSelectedRoles { get; set; }
     }
 }

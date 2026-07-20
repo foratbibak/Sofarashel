@@ -7,9 +7,8 @@ using Sofarashel.Domain.Enums.Account;
 using Sofarashel.ViewModels.Account;
 using System.Security.Claims;
 
-namespace Sofarashel.Web.Areas.Admin.Controllers
+namespace Sofarashel.Web.Controllers
 {
-    [Area("Admin")]
     public class AccountController(IAccountServices accountServices):Controller
     {
         private readonly IAccountServices _accountServices = accountServices;

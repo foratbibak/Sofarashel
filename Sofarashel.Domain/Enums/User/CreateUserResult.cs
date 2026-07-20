@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace User_Login.Enum.User
+namespace Sofarashel.Enum.User
 {
     public enum CreateUserResult
     {
