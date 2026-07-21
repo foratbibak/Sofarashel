@@ -1,18 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Sofarashel.Application.Extensions;
 using Sofarashel.Application.Mapper;
 using Sofarashel.Application.Services.Interfaces;
 using Sofarashel.Data.Contract;
+using Sofarashel.Domain.Contracts;
+using Sofarashel.Domain.Enums.User;
+using Sofarashel.Domain.ViewModels.User;
+using Sofarashel.Enum.User;
 using Sofarashel.Models.User;
+using Sofarashel.ViewModels.Users;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Sofarashel.Enum.User;
-using Sofarashel.ViewModels.Users;
-using Sofarashel.Domain.ViewModels.User;
 
 namespace Sofarashel.Application.Services.Implementation
 {
-    public class UserServices(IUserRepository userRepository) : IUserServices
+    public class UserServices(IUserRepository userRepository,IRoleRepository roleRepository) : IUserServices
     {
         public async Task<AdminUserFillterViewModel> AdminFilterAsync(AdminUserFillterViewModel model)
         {
@@ -106,13 +109,66 @@ namespace Sofarashel.Application.Services.Implementation
                 await userRepository.SaveAsync();
             }
             #endregion
+
             return CreateUserResult.Success;
 
         }
 
-        public Task<EditUserViewModel> GetUserForEditAsync(int userId)
+        public async Task<AdminEditUserResult> EditUserAsync(EditUserViewModel model)
         {
-            throw new NotImplementedException();
+            #region Validations
+            try
+            {
+                if (string.IsNullOrEmpty(model.UserName))
+                {
+                    return AdminEditUserResult.Error;
+
+                }
+                if (await userRepository.IsExsitUserNameForEditAsync(model.UserName,model.Id))
+                {
+                    return AdminEditUserResult.UserNameDuplicated;
+                }
+            }
+            catch (DbUpdateException)
+            {
+                return AdminEditUserResult.DatabaseError;
+            }
+            catch (Exception)
+            {
+
+                return AdminEditUserResult.UnknownError;
+            }
+            #endregion
+
+            #region Edit User
+            var user = await userRepository.GetUserFullDataAsync(model.Id);
+
+            if (user == null)
+            {
+                return AdminEditUserResult.Error;
+            }
+
+            UserMapper.MapToEditUser(user, model);
+
+            user.UpdateDate = DateTime.Now;
+
+            await userRepository.UpdateAsync(user);
+            await userRepository.SaveAsync();
+            #endregion
+            return AdminEditUserResult.Success;
+
+        }
+
+        public async Task<EditUserViewModel> GetUserForEditAsync(int userId)
+        {
+            var user = await userRepository.GetUserFullDataAsync(userId);
+            if (user == null)
+            {
+                throw new Exception("کاربر یافت نشد");
+            }
+            var edituser = UserMapper.MapToEditUser(user);
+            edituser.Roles = await roleRepository.GetAllRolesAsync();
+            return edituser;
         }
     }
 }

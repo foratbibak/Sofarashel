@@ -8,5 +8,12 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         {
             return View();
         }
+
+        [Route("/Admin/AccsesDenided")]
+        public IActionResult AccsessDenied(string? returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return View();
+        }
     }
 }

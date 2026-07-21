@@ -1,4 +1,5 @@
 ﻿
+using Sofarashel.Domain.Models.Permission;
 using Sofarashel.Domain.Models.Roles;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace Sofarashel.Domain.Contracts
 
         Task DeleteAllPermissionInRole(int roleId);
 
-        //Task<IEnumerable<RolePermissionMapping>>GetAllPermissionInRole(int roleId);
+        Task<IEnumerable<RolePermissionMapping>>GetAllPermissionInRole(int roleId);
 
         Task<Role?>GetbyIdAsync(int roleId);
         Task CreateRoleAsync(Role role);
@@ -24,7 +25,7 @@ namespace Sofarashel.Domain.Contracts
         Task DeleteAsync(Role role);
         Task DeleteAsync(int roleId);
 
-        //Task<IEnumerable<Permission>> GetAllPermissionsAsync();
+        Task<IEnumerable<Permission>> GetAllPermissionsAsync();
 
         Task AddPermissonToRoleAsync(int roleId, int permissionId);
 

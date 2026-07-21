@@ -41,6 +41,8 @@ namespace Sofarashel.Data.Contract
 
 
         Task<bool> IsExsitUserNameAsync(string userName);
+        Task<bool> IsExsitUserNameForEditAsync(string userName, int userId);
+
 
         Task SaveAsync();
     }

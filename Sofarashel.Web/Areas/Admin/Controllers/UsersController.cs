@@ -4,10 +4,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Sofarashel.Application.Services.Interfaces;
 using Sofarashel.Data;
+using Sofarashel.Domain.Enums.User;
 using Sofarashel.Domain.ViewModels.User;
 using Sofarashel.Enum.User;
+using Sofarashel.Ifra.Data.Static;
 using Sofarashel.Models.User;
 using Sofarashel.ViewModels.Users;
+using Sofarashel.Web.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,18 +21,17 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
     [Area("Admin")]
     public class UsersController : Controller
     {
-        private readonly GallaryDbcontext _context;
         private readonly IUserServices _userServices;
         private readonly IRoleServices _roleServices;
 
-        public UsersController(GallaryDbcontext context,IUserServices userServices,IRoleServices roleServices)
+        public UsersController(IUserServices userServices,IRoleServices roleServices)
         {
-            _context = context;
             this._userServices = userServices;
             this._roleServices = roleServices;
         }
 
         #region Index
+        [PermissionChecker(PermissionName.ManageUsers)]
         // GET: Admin/Users
         public async Task<IActionResult> Index(AdminUserFillterViewModel userFillter, string create = "false")
         {
@@ -41,26 +43,27 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
 
         #region Details
         // GET: Admin/Users/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var user = await _context.Users
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (user == null)
-            {
-                return NotFound();
-            }
+        //    var user = await _context.Users
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(user);
-        }
+        //    return View(user);
+        //}
         #endregion
 
-        // GET: Admin/Users/Create
-        public async  Task<IActionResult> Create()
+        #region  Create
+        [PermissionChecker(PermissionName.AddUsers)]
+        public async Task<IActionResult> Create()
         {
             var model = new CreateUserViewModel()
             {
@@ -71,6 +74,7 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionChecker(PermissionName.AddUsers)]
         public async Task<IActionResult> Create(CreateUserViewModel model)
         {
             if (ModelState.IsValid)
@@ -88,6 +92,11 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
             return View(model);
         }
 
+
+        #endregion
+
+        #region Edit
+        [PermissionChecker(PermissionName.EditUsers)]
         // GET: Admin/Users/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -103,75 +112,76 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
             }
             return View(user);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, EditUserViewModel editUser,User user)
+        [PermissionChecker(PermissionName.EditUsers)]
+
+        public async Task<IActionResult> Edit(int id, EditUserViewModel user)
         {
             if (id != user.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(user);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UserExists(user.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                return View(user);
+            }
+
+            var result = await _userServices.EditUserAsync(user);
+
+            if (result == AdminEditUserResult.Success)
+            {
                 return RedirectToAction(nameof(Index));
             }
+            else
+            {
+                ViewBag.Error = result;
+            }
             return View(user);
+
         }
+
+        #endregion
+
 
         // GET: Admin/Users/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var user = await _context.Users
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (user == null)
-            {
-                return NotFound();
-            }
+        //    var user = await _context.Users
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(user);
-        }
+        //    return View(user);
+        //}
 
         // POST: Admin/Users/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var user = await _context.Users.FindAsync(id);
-            if (user != null)
-            {
-                _context.Users.Remove(user);
-            }
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //[PermissionChecker(PermissionName.ManageUsers)]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var user = await _context.Users.FindAsync(id);
+        //    if (user != null)
+        //    {
+        //        _context.Users.Remove(user);
+        //    }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
-        private bool UserExists(int id)
-        {
-            return _context.Users.Any(e => e.Id == id);
-        }
+        //private bool UserExists(int id)
+        //{
+        //    return _context.Users.Any(e => e.Id == id);
+        //}
     }
 }

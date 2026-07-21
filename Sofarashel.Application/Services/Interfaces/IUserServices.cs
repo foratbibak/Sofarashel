@@ -1,10 +1,11 @@
 ﻿
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Sofarashel.Domain.Enums.User;
 using Sofarashel.Domain.ViewModels.User;
 using Sofarashel.Enum.User;
 using Sofarashel.ViewModels.Users;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Sofarashel.Application.Services.Interfaces
 {
@@ -15,6 +16,9 @@ namespace Sofarashel.Application.Services.Interfaces
         Task<CreateUserResult> CreateUserInAdminAsync(CreateUserViewModel model);
 
         Task<EditUserViewModel> GetUserForEditAsync(int userId);
+
+        Task<AdminEditUserResult> EditUserAsync(EditUserViewModel model);
+
 
 
 

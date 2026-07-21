@@ -63,16 +63,20 @@ namespace Sofarashel.Data.Implementation
             return await context.Users.SingleOrDefaultAsync(u => u.UserName == userName);  
         }
 
-        public Task<User?> GetUserFullDataAsync(int userId)
+        public async Task<User?> GetUserFullDataAsync(int userId)
         {
-            throw new NotImplementedException();
-            //return await context.Users.IgnoreQueryFilters().Include(u => u.UserInRole)
-            //            .ThenInclude(u => u.Role).SingleOrDefaultAsync(u => u.Id == userId);
+            return await context.Users.IgnoreQueryFilters().Include(u => u.UserInRole)
+               .ThenInclude(u => u.Role).SingleOrDefaultAsync(u => u.Id == userId);
         }
 
         public async Task<bool> IsExsitUserNameAsync(string userName)
         {
             return await context.Users.AnyAsync(u => u.UserName == userName);
+        }
+
+        public async Task<bool> IsExsitUserNameForEditAsync(string userName, int userId)
+        {
+            return await context.Users.AnyAsync(u => u.UserName == userName && u.Id != userId);
         }
 
         public async Task ReturnUserDeAcitve(User user)

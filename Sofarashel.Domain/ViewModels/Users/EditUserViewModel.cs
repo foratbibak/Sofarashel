@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Sofarashel.Domain.Models.Roles;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -25,7 +26,7 @@ namespace Sofarashel.Domain.ViewModels.User
         [DisplayName("حذف شده؟")]
         public bool IsDelete { get; set; }
 
-        //public IEnumerable<Role>? Roles { get; set; }
-        //public List<int>? UserSelectedRoles { get; set; }
+        public IEnumerable<Role>? Roles { get; set; }
+        public List<int>? UserSelectedRoles { get; set; }
     }
 }

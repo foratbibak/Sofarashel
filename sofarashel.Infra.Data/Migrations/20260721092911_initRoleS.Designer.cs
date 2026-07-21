@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofarashel.Data;
 
@@ -11,9 +12,11 @@ using Sofarashel.Data;
 namespace Sofarashel.Infra.Data.Migrations
 {
     [DbContext(typeof(GallaryDbcontext))]
-    partial class DBConnectionModelSnapshot : ModelSnapshot
+    [Migration("20260721092911_initRoleS")]
+    partial class initRoleS
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,61 +24,6 @@ namespace Sofarashel.Infra.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Sofarashel.Domain.Models.Permission.Permission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeleteDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DisplayName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<bool>("IsDelete")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UniqName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParentId");
-
-                    b.ToTable("Permissions");
-                });
-
-            modelBuilder.Entity("Sofarashel.Domain.Models.Permission.RolePermissionMapping", b =>
-                {
-                    b.Property<int>("PermissionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PermissionId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("RolePermissionMappings");
-                });
 
             modelBuilder.Entity("Sofarashel.Domain.Models.Roles.Role", b =>
                 {
@@ -96,8 +44,7 @@ namespace Sofarashel.Infra.Data.Migrations
 
                     b.Property<string>("RoleName")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
@@ -175,34 +122,6 @@ namespace Sofarashel.Infra.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Sofarashel.Domain.Models.Permission.Permission", b =>
-                {
-                    b.HasOne("Sofarashel.Domain.Models.Permission.Permission", "Parent")
-                        .WithMany()
-                        .HasForeignKey("ParentId");
-
-                    b.Navigation("Parent");
-                });
-
-            modelBuilder.Entity("Sofarashel.Domain.Models.Permission.RolePermissionMapping", b =>
-                {
-                    b.HasOne("Sofarashel.Domain.Models.Permission.Permission", "Permission")
-                        .WithMany("RolePermissionMappings")
-                        .HasForeignKey("PermissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Sofarashel.Domain.Models.Roles.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Permission");
-
-                    b.Navigation("Role");
-                });
-
             modelBuilder.Entity("Sofarashel.Domain.Models.Roles.UserInRoles", b =>
                 {
                     b.HasOne("Sofarashel.Domain.Models.Roles.Role", "Role")
@@ -220,11 +139,6 @@ namespace Sofarashel.Infra.Data.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Sofarashel.Domain.Models.Permission.Permission", b =>
-                {
-                    b.Navigation("RolePermissionMappings");
                 });
 
             modelBuilder.Entity("Sofarashel.Domain.Models.Roles.Role", b =>

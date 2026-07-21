@@ -16,5 +16,6 @@ namespace Sofarashel.Domain.Models.Roles
 
         public Role Role { get; set; }
         #endregion
+
     }
 }

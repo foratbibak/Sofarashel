@@ -23,15 +23,15 @@ namespace Sofarashel.Application.Services.Implementation
             await _roleRepository.CreateRoleAsync(Addrole);
             await _roleRepository.SaveAsync();
 
-            //if (role.PermissonSelectedIds != null && role.PermissonSelectedIds.Any())
-            //{
-            //    foreach (var item in role.PermissonSelectedIds)
-            //    {
-            //        await _roleRepository.AddPermissonToRoleAsync(Addrole.Id, item);
-            //        await _roleRepository.SaveAsync();
+            if (role.PermissonSelectedIds != null && role.PermissonSelectedIds.Any())
+            {
+                foreach (var item in role.PermissonSelectedIds)
+                {
+                    await _roleRepository.AddPermissonToRoleAsync(Addrole.Id, item);
+                    await _roleRepository.SaveAsync();
 
-            //    }
-            //}
+                }
+            }
         }
 
         public async Task DeleteRoleAsync(int roleId)

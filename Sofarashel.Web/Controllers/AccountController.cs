@@ -57,11 +57,12 @@ namespace Sofarashel.Web.Controllers
                 IsPersistent = login.RememberMe
             };
             await HttpContext.SignInAsync(principal, properties);
-            if (Url.IsLocalUrl(ReturnUrl))
+
+            if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
             {
                 return Redirect(ReturnUrl);
             }
-            return View("/");
+            return Redirect("/");
 
         }
         #endregion

@@ -1,0 +1,89 @@
+﻿@using Sofarashel.Domain.ViewModels.Roles
+@model AdminEditRoleViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Role</h4>
+<hr />
+<div class="row">
+    <form asp-action="Edit" class="row">
+
+
+        <div class="col-md-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="RoleId" type="hidden" />
+            <div class="form-group">
+                <label asp-for="RoleName" class="control-label"></label>
+                <input asp-for="RoleName" class="form-control" />
+                <span asp-validation-for="RoleName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="ویرایش" class="btn btn-primary" />
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 rounded-3">
+                <div class="card-header bg-white border-bottom-0 pt-4">
+                    <h5 class="mb-0">
+                        <i class="bx bx-group text-primary me-1"></i>
+                        نقش‌های کاربر
+                    </h5>
+                </div>
+                <div class="card-body">
+                    @foreach (var item in Model.permissions.Where(p => p.ParentId == null).ToList())
+                    {
+                        <div class="form-check mb-2">
+                            <input @((Model.PermissonSelectedIds.Any(r => r == item.Id) ? "checked" : "")) class="form-check-input" name="PermissonSelectedIds" type="checkbox" value="@item.Id" id="@item.Id">
+                            <label class="form-check-label" for="@item.Id">
+                                <i class="bx bx-shield-alt text-info me-1"></i>
+                                @item.DisplayName
+                            </label>
+                        </div>
+                        <div style="margin-right: 50px;">
+
+                            @foreach (var sub1 in Model.permissions.Where(p => p.ParentId == item.Id))
+                            {
+                                <div class="form-check mb-2" style="">
+                                    <input @((Model.PermissonSelectedIds.Any(r => r == sub1.Id) ? "checked" : "")) class="form-check-input" name="PermissonSelectedIds" type="checkbox" value="@sub1.Id" id="@sub1.Id">
+                                    <label class="form-check-label" for="@sub1.Id">
+                                        <i class="bx bx-shield-alt text-info me-1"></i>
+                                        @sub1.DisplayName
+                                    </label>
+                                </div>
+                                <div style="margin-right: 50px;">
+                                    @foreach (var sub2 in Model.permissions.Where(p => p.ParentId == sub1.Id))
+                                    {
+                                        <div class="form-check mb-2">
+                                            <input @((Model.PermissonSelectedIds.Any(r => r == sub2.Id) ? "checked" : "")) class="form-check-input" name="PermissonSelectedIds" type="checkbox" value="@sub2.Id" id="@sub2.Id">
+                                            <label class="form-check-label" for="@sub2.Id">
+                                                <i class="bx bx-shield-alt text-info me-1"></i>
+                                                @sub2.DisplayName
+                                            </label>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<div>
+    <a asp-action="Index">بازگست به لیست</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace User_Login.Models.Common
+namespace Sofarashel.Models.Common
 {
     public class BaseEntity
     {

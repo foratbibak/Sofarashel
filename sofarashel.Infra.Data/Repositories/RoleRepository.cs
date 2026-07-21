@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sofarashel.Data;
 using Sofarashel.Domain.Contracts;
+using Sofarashel.Domain.Models.Permission;
 using Sofarashel.Domain.Models.Roles;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,14 @@ namespace Sofarashel.Infra.Data.Repositories
 {
     public class RoleRepository(GallaryDbcontext _context) : IRoleRepository
     {
-        public Task AddPermissonToRoleAsync(int roleId, int permissionId)
+        public async Task AddPermissonToRoleAsync(int roleId, int permissionId)
         {
-            throw new NotImplementedException();
+            await _context.RolePermissionMappings.AddAsync(new RolePermissionMapping()
+            {
+                RoleId = roleId,
+                PermissionId = permissionId
+
+            });
         }
 
         public async Task CreateRoleAsync(Role role)
@@ -21,9 +27,10 @@ namespace Sofarashel.Infra.Data.Repositories
             await _context.Role.AddAsync(role);
         }
 
-        public Task DeleteAllPermissionInRole(int roleId)
+        public async Task DeleteAllPermissionInRole(int roleId)
         {
-            throw new NotImplementedException();
+            var permissions = await GetAllPermissionInRole(roleId);
+            _context.RolePermissionMappings.RemoveRange(permissions);
         }
 
         public async Task DeleteAsync(Role role)
@@ -39,6 +46,17 @@ namespace Sofarashel.Infra.Data.Repositories
             await DeleteAsync(role);
         }
 
+        public async Task<IEnumerable<RolePermissionMapping>> GetAllPermissionInRole(int roleId)
+        {
+            return await _context.RolePermissionMappings.Where(r => r.RoleId == roleId).ToListAsync();
+
+        }
+
+        public Task<IEnumerable<Permission>> GetAllPermissionsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IEnumerable<Role>> GetAllRolesAsync()
         {
             return await _context.Role.ToListAsync();
@@ -49,9 +67,10 @@ namespace Sofarashel.Infra.Data.Repositories
             return await _context.Role.FindAsync(roleId);
         }
 
-        public Task<Role> GetRoleByIdForAdminAsync(int? id)
+        public async Task<Role> GetRoleByIdForAdminAsync(int? id)
         {
-            throw new NotImplementedException();
+            return await _context.Role.Include(r => r.RolePermissionMappings)
+                           .Where(r => r.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task SaveAsync()

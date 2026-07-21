@@ -1,4 +1,5 @@
-﻿using User_Login.Models.Common;
+﻿using Sofarashel.Domain.Models.Roles;
+using Sofarashel.Models.Common;
 
 namespace Sofarashel.Models.User
 {
@@ -15,6 +16,9 @@ namespace Sofarashel.Models.User
         public bool IsActive { get; set; }
 
 
+        #region Realtions
+        public ICollection<UserInRoles>? UserInRole { get; set; }
 
+        #endregion
     }
 }

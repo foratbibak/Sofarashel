@@ -1,4 +1,5 @@
 ﻿
+using Sofarashel.Domain.Models.Permission;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +12,8 @@ namespace Sofarashel.Domain.ViewModels.Roles
     {
         [DisplayName("نام نقش")]
         public string RoleName { get; set; }
-        //public IEnumerable<Permission>? permissions { get; set; }
+
+        public IEnumerable<Permission>? permissions { get; set; }
 
         public List<int>? PermissonSelectedIds{ get; set; }
 
