@@ -145,16 +145,15 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         #endregion
 
 
-        // GET: Admin/Users/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
+        //[PermissionChecker(PermissionName.ManageUsers)]
+        //public async Task<IActionResult> Delete(int id)
         //{
         //    if (id == null)
         //    {
         //        return NotFound();
         //    }
 
-        //    var user = await _context.Users
-        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    var user = await _userServices.GetUserForDeleteAsync(id);
         //    if (user == null)
         //    {
         //        return NotFound();
@@ -163,25 +162,14 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         //    return View(user);
         //}
 
-        // POST: Admin/Users/Delete/5
+        //[PermissionChecker(PermissionName.ManageUsers)]
         //[HttpPost, ActionName("Delete")]
         //[ValidateAntiForgeryToken]
-        //[PermissionChecker(PermissionName.ManageUsers)]
         //public async Task<IActionResult> DeleteConfirmed(int id)
         //{
-        //    var user = await _context.Users.FindAsync(id);
-        //    if (user != null)
-        //    {
-        //        _context.Users.Remove(user);
-        //    }
+        //    await _userServices.DeleteUserAsync(id);
 
-        //    await _context.SaveChangesAsync();
         //    return RedirectToAction(nameof(Index));
-        //}
-
-        //private bool UserExists(int id)
-        //{
-        //    return _context.Users.Any(e => e.Id == id);
         //}
     }
 }

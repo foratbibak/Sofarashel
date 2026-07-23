@@ -155,6 +155,10 @@ namespace Sofarashel.Application.Services.Implementation
             await userRepository.UpdateAsync(user);
             await userRepository.SaveAsync();
             #endregion
+
+            #region Edit Role
+            await roleRepository.UpdateUserInRole(user.Id, model.UserSelectedRoles);
+            #endregion
             return AdminEditUserResult.Success;
 
         }
