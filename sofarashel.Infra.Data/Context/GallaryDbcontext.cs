@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Sofarashel.Domain.Models.Categories;
 using Sofarashel.Domain.Models.Permission;
 using Sofarashel.Domain.Models.Roles;
 using Sofarashel.Models.User;
@@ -25,13 +26,19 @@ namespace Sofarashel.Data
 
         #endregion
 
-
+        #region Categories
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<CategoryImage> CategoryImages { get; set; }
+        #endregion
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             #region Query Fillter
             modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDelete);
 
             modelBuilder.Entity<Role>().HasQueryFilter(r => !r.IsDelete);
+
+            modelBuilder.Entity<Category>().HasQueryFilter(c => !c.IsDelete);
+            modelBuilder.Entity<CategoryImage>().HasQueryFilter(ci => !ci.IsDelete);
             #endregion
 
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
