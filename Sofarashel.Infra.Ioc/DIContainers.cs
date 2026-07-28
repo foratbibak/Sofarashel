@@ -21,6 +21,7 @@ namespace Sofarashel.Infra.Ioc
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IPermissionRepository, PermissionRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
             #endregion
 
             #region Services
