@@ -29,6 +29,7 @@ namespace Sofarashel.Infra.Ioc
             services.AddScoped<IAccountServices, AccountServices>();
             services.AddScoped<IRoleServices, RoleServices>();
             services.AddScoped<IPermissionService, PermissionService>();
+            services.AddScoped<ICategoryServices, CategoryServices>();
 
 
             #endregion

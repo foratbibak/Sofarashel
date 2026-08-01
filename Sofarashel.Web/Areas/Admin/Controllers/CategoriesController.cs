@@ -17,6 +17,7 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         }
 
         #region Index
+        // GET: Admin/Categories
         public async Task<IActionResult> Index()
         {
             return View(await _categoryServices.GetRootCategoriesAsync());
@@ -24,6 +25,7 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         #endregion
 
         #region Children
+        // GET: Admin/Categories/Children/5
         public async Task<IActionResult> Children(int parentId)
         {
             return View(await _categoryServices.GetChildrenAsync(parentId));
@@ -31,11 +33,12 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         #endregion
 
         #region Create
+        // GET: Admin/Categories/Create
         public async Task<IActionResult> Create()
         {
             AdminCreateCategoryViewModel adminCreateCategory = new AdminCreateCategoryViewModel
             {
-                ParentCategories = await _categoryServices.GetAllCategoriesAsync()
+                ParentCategories = await _categoryServices.GetSelectableParentsAsync(null)
             };
             return View(adminCreateCategory);
         }
@@ -53,12 +56,13 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
                 }
                 ViewBag.Error = result;
             }
-            adminCreate.ParentCategories = await _categoryServices.GetAllCategoriesAsync();
+            adminCreate.ParentCategories = await _categoryServices.GetSelectableParentsAsync(null);
             return View(adminCreate);
         }
         #endregion
 
         #region Edit
+        // GET: Admin/Categories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,7 +77,7 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
             }
 
             var adminEdit = CategoryMapper.MapToEditCategoryViewModel(category);
-            adminEdit.ParentCategories = await _categoryServices.GetAllCategoriesAsync();
+            adminEdit.ParentCategories = await _categoryServices.GetSelectableParentsAsync(category.Id);
             return View(adminEdit);
         }
 
@@ -95,16 +99,29 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
                 }
                 ViewBag.Error = result;
             }
-            category.ParentCategories = await _categoryServices.GetAllCategoriesAsync();
+            category.ParentCategories = await _categoryServices.GetSelectableParentsAsync(category.Id);
             return View(category);
         }
         #endregion
 
         #region Delete
+        // GET: Admin/Categories/Delete/5
         public async Task Delete(int id)
         {
             await _categoryServices.DeleteCategoryAsync(id);
         }
         #endregion
+
+        //public async Task<IActionResult> GetById(int id)
+        //{
+        //    var category = await _categoryServices.GetCategoryByIdForAdmin(id);
+
+        //    if (category == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return Json(category);
+        //}
     }
 }

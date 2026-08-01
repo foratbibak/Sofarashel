@@ -69,5 +69,17 @@ namespace Sofarashel.Infra.Data.Repositories
         {
             await _context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Category>> GetSelectableParentsAsync(int? currentId)
+        {
+            var query = _context.Categories.Where(c => c.IsCategory);
+
+            if (currentId.HasValue)
+            {
+                query = query.Where(c => c.Id != currentId.Value);
+            }
+
+            return await query.ToListAsync();
+        }
     }
 }

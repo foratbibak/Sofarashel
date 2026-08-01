@@ -144,7 +144,14 @@ namespace Sofarashel.Application.Services.Implementation
 
             return false;
         }
+
+
         #endregion
+
+        public async Task<IEnumerable<Category>> GetSelectableParentsAsync(int? currentId)
+        {
+            return await _categoryRepository.GetSelectableParentsAsync(currentId);
+        }
 
     }
 }

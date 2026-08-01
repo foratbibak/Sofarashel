@@ -14,6 +14,8 @@ namespace Sofarashel.Application.Services.Interfaces
 
         Task<Category?> GetCategoryByIdForAdmin(int? id);
 
+        Task<IEnumerable<Category>> GetSelectableParentsAsync(int? currentId);
+
         Task<CreateCategoryResult> CreateCategoryAsync(AdminCreateCategoryViewModel category);
 
         Task<AdminEditCategoryResult> EditCategoryAsync(AdminEditCategoryViewModel category);
