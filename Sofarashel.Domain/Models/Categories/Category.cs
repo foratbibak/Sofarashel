@@ -34,7 +34,7 @@ namespace Sofarashel.Domain.Models.Categories
         #region Realtions
         public Category? Parent { get; set; }
 
-        public ICollection<Category> Children { get; set; }
+        public ICollection<Category>? SubCategories { get; set; }
 
         public ICollection<CategoryImage>? Images { get; set; }
         #endregion

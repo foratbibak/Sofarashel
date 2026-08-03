@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sofarashel.Application.Mapper;
 using Sofarashel.Application.Services.Interfaces;
-using Sofarashel.Domain.Enums.Categories;
 using Sofarashel.Domain.ViewModels.Categories;
 
 namespace Sofarashel.Web.Areas.Admin.Controllers
@@ -17,52 +16,39 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         }
 
         #region Index
-        // GET: Admin/Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _categoryServices.GetRootCategoriesAsync());
+            var categories = await _categoryServices.GetRootCategoriesAsync();
+            return Json(categories);
         }
         #endregion
 
-        #region Children
-        // GET: Admin/Categories/Children/5
-        public async Task<IActionResult> Children(int parentId)
+        #region SubCategories
+        // GET: Admin/Categories/SubCategories/5
+        public async Task<IActionResult> SubCategories(int parentId)
         {
-            return View(await _categoryServices.GetChildrenAsync(parentId));
+            var categories = await _categoryServices.GetSubCategoriesAsync(parentId);
+            return Json(categories);
         }
         #endregion
 
         #region Create
-        // GET: Admin/Categories/Create
         public async Task<IActionResult> Create()
         {
-            AdminCreateCategoryViewModel adminCreateCategory = new AdminCreateCategoryViewModel
-            {
-                ParentCategories = await _categoryServices.GetSelectableParentsAsync(null)
-            };
-            return View(adminCreateCategory);
+            var parents = await _categoryServices.GetSelectableParentsAsync(null);
+            return Json(parents);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(AdminCreateCategoryViewModel adminCreate)
         {
-            if (ModelState.IsValid)
-            {
-                var result = await _categoryServices.CreateCategoryAsync(adminCreate);
-                if (result == CreateCategoryResult.Success)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                ViewBag.Error = result;
-            }
-            adminCreate.ParentCategories = await _categoryServices.GetSelectableParentsAsync(null);
-            return View(adminCreate);
+            var result = await _categoryServices.CreateCategoryAsync(adminCreate);
+            return Json(result);
         }
         #endregion
 
         #region Edit
-        // GET: Admin/Categories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -76,9 +62,10 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var adminEdit = CategoryMapper.MapToEditCategoryViewModel(category);
-            adminEdit.ParentCategories = await _categoryServices.GetSelectableParentsAsync(category.Id);
-            return View(adminEdit);
+            var model = CategoryMapper.MapToEditCategoryViewModel(category);
+            model.ParentCategories = await _categoryServices.GetSelectableParentsAsync(category.Id);
+
+            return Json(model);
         }
 
         [HttpPost]
@@ -90,38 +77,18 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
-                var result = await _categoryServices.EditCategoryAsync(category);
-                if (result == AdminEditCategoryResult.Success)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                ViewBag.Error = result;
-            }
-            category.ParentCategories = await _categoryServices.GetSelectableParentsAsync(category.Id);
-            return View(category);
+            var result = await _categoryServices.EditCategoryAsync(category);
+            return Json(result);
         }
         #endregion
 
         #region Delete
-        // GET: Admin/Categories/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task Delete(int id)
         {
             await _categoryServices.DeleteCategoryAsync(id);
         }
         #endregion
-
-        //public async Task<IActionResult> GetById(int id)
-        //{
-        //    var category = await _categoryServices.GetCategoryByIdForAdmin(id);
-
-        //    if (category == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Json(category);
-        //}
     }
 }

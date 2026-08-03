@@ -20,9 +20,9 @@ namespace Sofarashel.Application.Services.Implementation
             return await _categoryRepository.GetRootCategoriesAsync();
         }
 
-        public async Task<IEnumerable<Category>> GetChildrenAsync(int parentId)
+        public async Task<IEnumerable<Category>> GetSubCategoriesAsync(int parentId)
         {
-            return await _categoryRepository.GetChildrenAsync(parentId);
+            return await _categoryRepository.GetSubCategoriesAsync(parentId);
         }
 
         public async Task<Category?> GetCategoryByIdForAdmin(int? id)

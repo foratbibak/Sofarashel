@@ -10,7 +10,7 @@ namespace Sofarashel.Application.Services.Interfaces
 
         Task<IEnumerable<Category>> GetRootCategoriesAsync();
 
-        Task<IEnumerable<Category>> GetChildrenAsync(int parentId);
+        Task<IEnumerable<Category>> GetSubCategoriesAsync(int parentId);
 
         Task<Category?> GetCategoryByIdForAdmin(int? id);
 

@@ -35,21 +35,7 @@ builder.Services.AddDbContext<GallaryDbcontext>(options =>
 builder.Services.RegisterServices();
 #endregion
 
-#region CORS
-var allowedOrigins = builder.Configuration.GetSection("AllowedFrontendOrigins").Get<string[]>() ?? Array.Empty<string>();
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowHtml", policy =>
-    {
-        policy
-            .WithOrigins(allowedOrigins)
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials();
-    });
-});
-#endregion
 
 #region Authentication
 builder.Services.AddAuthentication(options =>

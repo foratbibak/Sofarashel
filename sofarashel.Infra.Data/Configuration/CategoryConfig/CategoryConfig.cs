@@ -41,9 +41,9 @@ namespace Sofarashel.Infra.Data.Configuration.CategoryConfig
 
             #region Realtions
             builder.HasOne(c => c.Parent)
-                   .WithMany(c => c.Children)
-                   .HasForeignKey(c => c.ParentId)
-                   .OnDelete(DeleteBehavior.Restrict);
+                .WithMany(c => c.SubCategories)
+                .HasForeignKey(c => c.ParentId)
+                .OnDelete(DeleteBehavior.Restrict);
             #endregion
         }
     }

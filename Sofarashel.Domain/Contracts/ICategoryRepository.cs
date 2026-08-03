@@ -11,7 +11,7 @@ namespace Sofarashel.Domain.Contracts
 
         Task<IEnumerable<Category>> GetRootCategoriesAsync();
 
-        Task<IEnumerable<Category>> GetChildrenAsync(int parentId);
+        Task<IEnumerable<Category>> GetSubCategoriesAsync(int parentId);
 
         Task<Category?> GetByIdAsync(int categoryId);
 

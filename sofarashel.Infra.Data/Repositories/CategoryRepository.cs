@@ -22,7 +22,7 @@ namespace Sofarashel.Infra.Data.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Category>> GetChildrenAsync(int parentId)
+        public async Task<IEnumerable<Category>> GetSubCategoriesAsync(int parentId)
         {
             return await _context.Categories
                 .Where(c => c.ParentId == parentId)
@@ -36,10 +36,19 @@ namespace Sofarashel.Infra.Data.Repositories
 
         public async Task<Category?> GetByIdForAdminAsync(int? categoryId)
         {
-            return await _context.Categories
-                .Include(c => c.Children)
+            var category = await _context.Categories
                 .Include(c => c.Images)
                 .FirstOrDefaultAsync(c => c.Id == categoryId);
+
+            if (category?.Images != null)
+            {
+                foreach (var image in category.Images)
+                {
+                    image.Category = null;
+                }
+            }
+
+            return category;
         }
 
         public async Task CreateCategoryAsync(Category category)
