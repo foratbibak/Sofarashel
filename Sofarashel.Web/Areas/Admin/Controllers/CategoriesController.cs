@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sofarashel.Application.Mapper;
 using Sofarashel.Application.Services.Interfaces;
+using Sofarashel.Domain.Enums.Categories;
 using Sofarashel.Domain.ViewModels.Categories;
 
 namespace Sofarashel.Web.Areas.Admin.Controllers
@@ -43,6 +44,11 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(AdminCreateCategoryViewModel adminCreate)
         {
+            if (!ModelState.IsValid)
+            {
+                return Json(CreateCategoryResult.Error);
+            }
+
             var result = await _categoryServices.CreateCategoryAsync(adminCreate);
             return Json(result);
         }
@@ -75,6 +81,11 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
             if (id != category.Id)
             {
                 return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return Json(AdminEditCategoryResult.Error);
             }
 
             var result = await _categoryServices.EditCategoryAsync(category);

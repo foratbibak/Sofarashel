@@ -68,8 +68,6 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
-app.UseCors("AllowHtml");
-
 app.UseAuthorization();
 
 app.MapStaticAssets();
