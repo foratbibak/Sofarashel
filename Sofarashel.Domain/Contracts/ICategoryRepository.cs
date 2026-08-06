@@ -19,6 +19,9 @@ namespace Sofarashel.Domain.Contracts
 
         Task<IEnumerable<Category>> GetSelectableParentsAsync(int? currentId);
 
+
+        Task<IEnumerable<Category>> GetSubCategoriesProductAsync(int parentId);
+
         Task CreateCategoryAsync(Category category);
 
         Task UpdateCategoryAsync(Category category);

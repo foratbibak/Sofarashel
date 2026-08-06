@@ -153,5 +153,9 @@ namespace Sofarashel.Application.Services.Implementation
             return await _categoryRepository.GetSelectableParentsAsync(currentId);
         }
 
+        public async Task<IEnumerable<Category>> GetSubCategoriesProductAsync(int parentId)
+        {
+            return await _categoryRepository.GetSubCategoriesProductAsync(parentId);
+        }
     }
 }
