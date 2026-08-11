@@ -13,7 +13,7 @@ namespace Sofarashel.Application.Services.Implementation
         public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
         {
             
-            //return await _categoryRepository.GetAllCategoriesAsync();
+            return await _categoryRepository.GetAllCategoriesAsync();
         }
 
         public async Task<IEnumerable<Category>> GetRootCategoriesAsync()
