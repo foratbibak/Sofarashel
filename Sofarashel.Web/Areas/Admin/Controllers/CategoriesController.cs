@@ -33,16 +33,6 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         }
         #endregion
 
-
-        #region SubCategoriesProduct
-        // GET: Admin/Categories/SubCategories/5
-        public async Task<IActionResult> GetSubCategoriesProduct(int parentId)
-        {
-            var categories = await _categoryServices.GetSubCategoriesProductAsync(parentId);
-            return Json(categories);
-        }
-        #endregion
-
         #region Create
         public async Task<IActionResult> Create()
         {
@@ -112,7 +102,6 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         }
         #endregion
         #region GetProducts
-        // GET: Admin/Categories/GetProducts/5
         public async Task<IActionResult> GetProducts(int parentId)
         {
             var products = await _categoryServices.GetProductsByParentAsync(parentId);

@@ -25,7 +25,7 @@ namespace Sofarashel.Infra.Data.Repositories
         public async Task<IEnumerable<Category>> GetSubCategoriesAsync(int parentId)
         {
             return await _context.Categories
-                .Where(c => c.ParentId == parentId)
+                .Where(c => c.ParentId == parentId && c.IsCategory == true)
                 .ToListAsync();
         }
 
@@ -139,6 +139,39 @@ namespace Sofarashel.Infra.Data.Repositories
             }
 
             return await query.ToListAsync();
+        }
+
+        public async Task AddProductDetailAsync(ProductDetail productDetail)
+        {
+            await _context.ProductDetails.AddAsync(productDetail);
+        }
+
+        public async Task UpdateProductDetailAsync(ProductDetail productDetail)
+        {
+            _context.ProductDetails.Update(productDetail);
+        }
+
+        public async Task<ProductDetail?> GetProductDetailByCategoryIdAsync(int categoryId)
+        {
+            return await _context.ProductDetails
+                .FirstOrDefaultAsync(pd => pd.CategoryId == categoryId);
+        }
+
+        public async Task AddImageAsync(CategoryImage image)
+        {
+            await _context.CategoryImages.AddAsync(image);
+        }
+
+        public async Task<CategoryImage?> GetImageByIdAsync(int imageId)
+        {
+            return await _context.CategoryImages.FindAsync(imageId);
+        }
+
+        public async Task DeleteImageAsync(CategoryImage image)
+        {
+            image.IsDelete = true;
+            image.DeleteDate = DateTime.Now;
+            _context.CategoryImages.Update(image);
         }
     }
 }
