@@ -25,10 +25,68 @@ namespace Sofarashel.Application.Services.Implementation
             return await _categoryRepository.GetSubCategoriesAsync(parentId);
         }
 
-        public async Task<Category?> GetCategoryByIdForAdmin(int? id)
+        public async Task<IEnumerable<Category>> GetProductsByParentAsync(int parentId)
         {
-            return await _categoryRepository.GetByIdForAdminAsync(id);
+            return await _categoryRepository.GetProductsByParentAsync(parentId);
         }
+
+        public async Task<Category?> GetSingleProductAsync(int? id)
+        {
+            return await _categoryRepository.GetProductWithDetailsAsync(id);
+        }
+
+        public async Task<IEnumerable<Category>> GetParentCategoryOptionsAsync(int? currentId)
+        {
+            return await _categoryRepository.GetParentCategoryOptionsAsync(currentId);
+        }
+
+        public async Task<AdminEditCategoryViewModel?> GetEditViewModelAsync(int? id)
+        {
+            var category = await _categoryRepository.GetByIdForAdminAsync(id);
+
+            if (category == null)
+            {
+                return null;
+            }
+
+            var model = CategoryMapper.MapToEditCategoryViewModel(category);
+            model.ParentCategories = await _categoryRepository.GetParentCategoryOptionsAsync(category.Id);
+
+            return model;
+        }
+
+        public async Task<CategoryImage?> GetImageByIdAsync(int imageId)
+        {
+            return await _categoryRepository.GetImageByIdAsync(imageId);
+        }
+
+        #region Images
+        public async Task AddImageAsync(int categoryId, string imageFileName)
+        {
+            var image = new CategoryImage
+            {
+                CategoryId = categoryId,
+                ImageUrl = imageFileName,
+                IsMain = false,
+                CreatDate = DateTime.Now,
+                IsDelete = false
+            };
+
+            await _categoryRepository.AddImageAsync(image);
+            await _categoryRepository.SaveAsync();
+        }
+
+        public async Task DeleteImageAsync(int imageId)
+        {
+            var image = await _categoryRepository.GetImageByIdAsync(imageId);
+
+            if (image != null)
+            {
+                await _categoryRepository.DeleteImageAsync(image);
+                await _categoryRepository.SaveAsync();
+            }
+        }
+        #endregion
 
         public async Task<CreateCategoryResult> CreateCategoryAsync(AdminCreateCategoryViewModel category)
         {
@@ -48,12 +106,17 @@ namespace Sofarashel.Application.Services.Implementation
             }
             #endregion
 
-            #region Create Category
+            #region Create Category  ProductDetail
             try
             {
                 var addCategory = CategoryMapper.MapToCategory(category);
 
                 await _categoryRepository.CreateCategoryAsync(addCategory);
+                await _categoryRepository.SaveAsync();
+
+                var productDetail = CategoryMapper.MapToProductDetail(category, addCategory.Id);
+
+                await _categoryRepository.AddProductDetailAsync(productDetail);
                 await _categoryRepository.SaveAsync();
             }
             catch (DbUpdateException)
@@ -92,7 +155,7 @@ namespace Sofarashel.Application.Services.Implementation
             }
             #endregion
 
-            #region Edit Category
+            #region Edit Category ProductDetail
             try
             {
                 var editCategory = await _categoryRepository.GetByIdAsync(category.Id);
@@ -103,8 +166,21 @@ namespace Sofarashel.Application.Services.Implementation
                 }
 
                 CategoryMapper.MapToEditCategory(editCategory, category);
-
                 await _categoryRepository.UpdateCategoryAsync(editCategory);
+
+                var productDetail = await _categoryRepository.GetProductDetailByCategoryIdAsync(category.Id);
+
+                if (productDetail == null)
+                {
+                    productDetail = CategoryMapper.MapToProductDetailFromEdit(category, category.Id);
+                    await _categoryRepository.AddProductDetailAsync(productDetail);
+                }
+                else
+                {
+                    CategoryMapper.MapToEditProductDetail(productDetail, category);
+                    await _categoryRepository.UpdateProductDetailAsync(productDetail);
+                }
+
                 await _categoryRepository.SaveAsync();
             }
             catch (DbUpdateException)
@@ -144,14 +220,6 @@ namespace Sofarashel.Application.Services.Implementation
 
             return false;
         }
-
-
         #endregion
-
-        public async Task<IEnumerable<Category>> GetSelectableParentsAsync(int? currentId)
-        {
-            return await _categoryRepository.GetSelectableParentsAsync(currentId);
-        }
-
     }
 }

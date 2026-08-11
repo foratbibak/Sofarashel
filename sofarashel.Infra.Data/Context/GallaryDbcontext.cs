@@ -29,6 +29,7 @@ namespace Sofarashel.Data
         #region Categories
         public DbSet<Category> Categories { get; set; }
         public DbSet<CategoryImage> CategoryImages { get; set; }
+        public DbSet<ProductDetail> ProductDetails { get; set; }        
         #endregion
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,6 +40,7 @@ namespace Sofarashel.Data
 
             modelBuilder.Entity<Category>().HasQueryFilter(c => !c.IsDelete);
             modelBuilder.Entity<CategoryImage>().HasQueryFilter(ci => !ci.IsDelete);
+            modelBuilder.Entity<ProductDetail>().HasQueryFilter(pd => !pd.IsDelete);
             #endregion
 
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);

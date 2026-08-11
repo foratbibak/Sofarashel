@@ -11,8 +11,12 @@ namespace Sofarashel.Ifra.Data.Static
         public const string AddUsers = "AddUser";
         public const string EditUsers = "EditUser";
         public const string DeleteUsers = "DeleteUser";
-
-
+        #endregion
+        #region Categories
+        public const string ManageCategories = "ManageCategories";
+        public const string AddCategories = "AddCategory";
+        public const string EditCategories = "EditCategory";
+        public const string DeleteCategories = "DeleteCategory";
         #endregion
     }
 }

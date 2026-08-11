@@ -25,8 +25,29 @@ namespace Sofarashel.Infra.Data.Repositories
         public async Task<IEnumerable<Category>> GetSubCategoriesAsync(int parentId)
         {
             return await _context.Categories
-                .Where(c => c.ParentId == parentId)
+                .Where(c => c.ParentId == parentId && c.IsCategory == true)
                 .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Category>> GetProductsByParentAsync(int parentId)
+        {
+            var items = await _context.Categories
+                .Where(c => c.ParentId == parentId && c.IsCategory == false)
+                .Include(c => c.Images)
+                .ToListAsync();
+
+            foreach (var item in items)
+            {
+                if (item.Images != null)
+                {
+                    foreach (var image in item.Images)
+                    {
+                        image.Category = null;
+                    }
+                }
+            }
+
+            return items;
         }
 
         public async Task<Category?> GetByIdAsync(int categoryId)
@@ -38,6 +59,7 @@ namespace Sofarashel.Infra.Data.Repositories
         {
             var category = await _context.Categories
                 .Include(c => c.Images)
+                .Include(c => c.ProductDetail)
                 .FirstOrDefaultAsync(c => c.Id == categoryId);
 
             if (category?.Images != null)
@@ -46,6 +68,34 @@ namespace Sofarashel.Infra.Data.Repositories
                 {
                     image.Category = null;
                 }
+            }
+
+            if (category?.ProductDetail != null)
+            {
+                category.ProductDetail.Category = null;
+            }
+
+            return category;
+        }
+
+        public async Task<Category?> GetProductWithDetailsAsync(int? categoryId)
+        {
+            var category = await _context.Categories
+                .Include(c => c.Images)
+                .Include(c => c.ProductDetail)
+                .FirstOrDefaultAsync(c => c.Id == categoryId);
+
+            if (category?.Images != null)
+            {
+                foreach (var image in category.Images)
+                {
+                    image.Category = null;
+                }
+            }
+
+            if (category?.ProductDetail != null)
+            {
+                category.ProductDetail.Category = null;
             }
 
             return category;
@@ -79,7 +129,7 @@ namespace Sofarashel.Infra.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Category>> GetSelectableParentsAsync(int? currentId)
+        public async Task<IEnumerable<Category>> GetParentCategoryOptionsAsync(int? currentId)
         {
             var query = _context.Categories.Where(c => c.IsCategory);
 
@@ -90,5 +140,40 @@ namespace Sofarashel.Infra.Data.Repositories
 
             return await query.ToListAsync();
         }
+
+        public async Task AddProductDetailAsync(ProductDetail productDetail)
+        {
+            await _context.ProductDetails.AddAsync(productDetail);
+        }
+
+        public async Task UpdateProductDetailAsync(ProductDetail productDetail)
+        {
+            _context.ProductDetails.Update(productDetail);
+        }
+
+        public async Task<ProductDetail?> GetProductDetailByCategoryIdAsync(int categoryId)
+        {
+            return await _context.ProductDetails
+                .FirstOrDefaultAsync(pd => pd.CategoryId == categoryId);
+        }
+
+        #region Images
+        public async Task AddImageAsync(CategoryImage image)
+        {
+            await _context.CategoryImages.AddAsync(image);
+        }
+
+        public async Task<CategoryImage?> GetImageByIdAsync(int imageId)
+        {
+            return await _context.CategoryImages.FindAsync(imageId);
+        }
+
+        public async Task DeleteImageAsync(CategoryImage image)
+        {
+            image.IsDelete = true;
+            image.DeleteDate = DateTime.Now;
+            _context.CategoryImages.Update(image);
+        }
+        #endregion
     }
 }
