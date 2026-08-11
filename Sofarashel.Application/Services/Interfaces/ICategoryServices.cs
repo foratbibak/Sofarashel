@@ -13,19 +13,7 @@ namespace Sofarashel.Application.Services.Interfaces
 
         Task<IEnumerable<Category>> GetSubCategoriesAsync(int parentId);
 
-        Task<IEnumerable<Category>> GetProductsByParentAsync(int parentId);
-
-        Task<Category?> GetSingleProductAsync(int? id);
-
-        Task<IEnumerable<Category>> GetParentCategoryOptionsAsync(int? currentId);
-
-        Task<AdminEditCategoryViewModel?> GetEditViewModelAsync(int? id);
-
-        Task<CategoryImage?> GetImageByIdAsync(int imageId);
-        #endregion
-
-        #region Images
-        Task AddImageAsync(int categoryId, string imageFileName);
+        Task<Category?> GetCategoryByIdForAdmin(int? id);
 
         Task DeleteImageAsync(int imageId);
         #endregion

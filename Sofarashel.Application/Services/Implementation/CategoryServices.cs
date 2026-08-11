@@ -225,5 +225,9 @@ namespace Sofarashel.Application.Services.Implementation
 
 
 
+        public async Task<IEnumerable<Category>> GetSubCategoriesProductAsync(int parentId)
+        {
+            return await _categoryRepository.GetSubCategoriesProductAsync(parentId);
+        }
     }
 }
