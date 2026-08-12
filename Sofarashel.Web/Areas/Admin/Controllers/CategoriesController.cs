@@ -62,16 +62,14 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var category = await _categoryServices.GetCategoryByIdForAdmin(id);
+            var category = await _categoryServices.GetEditViewModelAsync(id);
             if (category == null)
             {
                 return NotFound();
             }
 
-            var model = CategoryMapper.MapToEditCategoryViewModel(category);
-            model.ParentCategories = await _categoryServices.GetSelectableParentsAsync(category.Id);
 
-            return Json(model);
+            return Json(category);
         }
 
         [HttpPost]

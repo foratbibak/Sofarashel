@@ -12,6 +12,7 @@ namespace Sofarashel.Domain.Models.Categories
         public bool IsMain { get; set; }
 
         public int CategoryId { get; set; }
+        public byte ImageByte { get; set; }
 
         #region Realtions
         public Category? Category { get; set; }

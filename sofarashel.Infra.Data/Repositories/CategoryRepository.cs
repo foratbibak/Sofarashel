@@ -25,7 +25,7 @@ namespace Sofarashel.Infra.Data.Repositories
         public async Task<IEnumerable<Category>> GetSubCategoriesAsync(int parentId)
         {
             return await _context.Categories
-                .Where(c => c.ParentId == parentId && c.IsCategory == true)
+                .Where(c => c.ParentId == parentId )//&& c.IsCategory == true)
                 .ToListAsync();
         }
 
