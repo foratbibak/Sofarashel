@@ -23,13 +23,10 @@ namespace Sofarashel.Application.Services.Interfaces
         Task<CategoryImage?> GetImageByIdAsync(int imageId);
 
         Task AddImageAsync(int categoryId, string imageFileName);
-
         Task DeleteImageAsync(int imageId);
 
         Task<CreateCategoryResult> CreateCategoryAsync(AdminCreateCategoryViewModel category);
-
         Task<AdminEditCategoryResult> EditCategoryAsync(AdminEditCategoryViewModel category);
-
         Task DeleteCategoryAsync(int categoryId);
     }
 }

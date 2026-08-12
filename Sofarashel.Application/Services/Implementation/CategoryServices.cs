@@ -225,10 +225,6 @@ namespace Sofarashel.Application.Services.Implementation
 
 
 
-        public async Task<IEnumerable<Category>> GetSubCategoriesProductAsync(int parentId)
-        {
-            throw new NotImplementedException();
-            //return await _categoryRepository.GetSubCategoriesProductAsync(parentId);
-        }
+
     }
 }
