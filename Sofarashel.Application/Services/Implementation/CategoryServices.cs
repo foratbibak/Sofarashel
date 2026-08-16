@@ -64,15 +64,7 @@ namespace Sofarashel.Application.Services.Implementation
         #region Images
         public async Task AddImageAsync(int categoryId, string imageFileName)
         {
-            var image = new CategoryImage
-            {
-                CategoryId = categoryId,
-                ImageUrl = imageFileName,
-                IsMain = false,
-                CreatDate = DateTime.Now,
-                IsDelete = false
-            };
-
+            var image = CategoryMapper.MapToImage(categoryId, imageFileName);
             await _categoryRepository.AddImageAsync(image);
             await _categoryRepository.SaveAsync();
         }

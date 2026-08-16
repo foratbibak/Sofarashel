@@ -92,6 +92,18 @@ namespace Sofarashel.Application.Mapper
                 Height = category.ProductDetail?.Height,
                 Images = category.Images,
             };
+
+        }
+        public static CategoryImage MapToImage(int categoryId, string fileName)
+        {
+            return new CategoryImage
+            {
+                CategoryId = categoryId,
+                ImageUrl = fileName,
+                IsMain = false,
+                CreatDate = DateTime.Now,
+                IsDelete = false
+            };
         }
     }
 }

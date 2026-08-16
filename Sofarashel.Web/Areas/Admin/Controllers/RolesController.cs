@@ -6,6 +6,8 @@ using Sofarashel.Application.Services.Interfaces;
 using Sofarashel.Data;
 using Sofarashel.Domain.Models.Roles;
 using Sofarashel.Domain.ViewModels.Roles;
+using Sofarashel.Ifra.Data.Static;
+using Sofarashel.Web.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +30,7 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         }
 
         #region Index
+        [PermissionChecker(PermissionName.ManageRoles)]   
         // GET: Admin/Roles
         public async Task<IActionResult> Index()
         {
@@ -36,7 +39,7 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         #endregion
 
         #region Create
-        // GET: Admin/Roles/Create
+        [PermissionChecker(PermissionName.AddRoles)]
         public async Task<IActionResult> Create()
         {
             AdminCreateRoleViewModel adminCreateRole = new AdminCreateRoleViewModel
@@ -49,6 +52,7 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionChecker(PermissionName.AddRoles)]
         public async Task<IActionResult> Create(AdminCreateRoleViewModel adminCreate)
         {
             if (ModelState.IsValid)
@@ -62,7 +66,7 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         #endregion
 
         #region Edit
-        // GET: Admin/Roles/Edit/5
+        [PermissionChecker(PermissionName.EditRoles)]     
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,6 +87,7 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionChecker(PermissionName.EditRoles)]
         public async Task<IActionResult> Edit(int id, AdminEditRoleViewModel role)
         {
             if (id != role.RoleId)
@@ -102,7 +107,7 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         #endregion
 
         #region Delete
-        // GET: Admin/Roles/Delete/5
+        [PermissionChecker(PermissionName.DeleteRoles)]
         public async Task Delete(int id)
         {
             await _roleServices.DeleteRoleAsync(id);
