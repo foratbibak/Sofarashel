@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Sofarashel.Domain.Models.Categories;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Sofarashel.Infra.Data.Configuration.CategoryConfig
 {
@@ -16,6 +13,7 @@ namespace Sofarashel.Infra.Data.Configuration.CategoryConfig
             builder.Property(c => c.Id).ValueGeneratedOnAdd().UseIdentityColumn();
             builder.Property(c => c.Title).IsRequired().HasMaxLength(200);
             builder.Property(c => c.Description).HasMaxLength(1000);
+            builder.Property(c => c.MainImage).HasMaxLength(500);
 
             builder.HasOne(c => c.Parent)
                 .WithMany(c => c.SubCategories)

@@ -1,0 +1,27 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Sofarashel.Domain.Models.Products;
+
+namespace Sofarashel.Infra.Data.Configuration.ProductConfig
+{
+    public class ProductConfig : IEntityTypeConfiguration<Product>
+    {
+        public void Configure(EntityTypeBuilder<Product> builder)
+        {
+            builder.HasKey(p => p.Id);
+            builder.Property(p => p.Id).ValueGeneratedOnAdd().UseIdentityColumn();
+
+            builder.Property(p => p.Title).IsRequired().HasMaxLength(200);
+            builder.Property(p => p.Description).HasMaxLength(1000);
+            builder.Property(p => p.MainImage).HasMaxLength(500);
+
+            builder.Property(p => p.Material).HasMaxLength(200);
+            builder.Property(p => p.FabricType).HasMaxLength(200);
+            builder.Property(p => p.Color).HasMaxLength(100);
+            builder.Property(p => p.Style).HasMaxLength(200);
+            builder.Property(p => p.Length).HasColumnType("decimal(6,2)");
+            builder.Property(p => p.Width).HasColumnType("decimal(6,2)");
+            builder.Property(p => p.Height).HasColumnType("decimal(6,2)");
+        }
+    }
+}

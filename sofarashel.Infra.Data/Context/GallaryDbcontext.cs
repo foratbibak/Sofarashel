@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sofarashel.Domain.Models.Categories;
 using Sofarashel.Domain.Models.Permission;
+using Sofarashel.Domain.Models.Products;
+using Sofarashel.Domain.Models.Relations;
 using Sofarashel.Domain.Models.Roles;
 using Sofarashel.Models.User;
 using System.Data;
@@ -28,9 +30,17 @@ namespace Sofarashel.Data
 
         #region Categories
         public DbSet<Category> Categories { get; set; }
-        public DbSet<CategoryImage> CategoryImages { get; set; }
-        public DbSet<ProductDetail> ProductDetails { get; set; }        
         #endregion
+
+        #region Products
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
+        #endregion
+
+        #region Relations
+        public DbSet<Rel_Product_Category> Rel_Product_Categories { get; set; }
+        #endregion
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             #region Query Fillter
@@ -39,8 +49,8 @@ namespace Sofarashel.Data
             modelBuilder.Entity<Role>().HasQueryFilter(r => !r.IsDelete);
 
             modelBuilder.Entity<Category>().HasQueryFilter(c => !c.IsDelete);
-            modelBuilder.Entity<CategoryImage>().HasQueryFilter(ci => !ci.IsDelete);
-            modelBuilder.Entity<ProductDetail>().HasQueryFilter(pd => !pd.IsDelete);
+            modelBuilder.Entity<Product>().HasQueryFilter(p => !p.IsDelete);
+            modelBuilder.Entity<ProductImage>().HasQueryFilter(pi => !pi.IsDelete);
             #endregion
 
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
