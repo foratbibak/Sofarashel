@@ -21,29 +21,8 @@ namespace Sofarashel.Domain.ViewModels.Categories
         [DisplayName("دسته اصلی")]
         public int? ParentId { get; set; }
 
-        [DisplayName("جنس")]
-        public string? Material { get; set; }
-
-        [DisplayName("نوع پارچه")]
-        public string? FabricType { get; set; }
-
-        [DisplayName("رنگ")]
-        public string? Color { get; set; }
-
-        [DisplayName("سبک")]
-        public string? Style { get; set; }
-
-        [DisplayName("طول ")]
-        public decimal? Length { get; set; }
-
-        [DisplayName("عرض ")]
-        public decimal? Width { get; set; }
-
-        [DisplayName("ارتفاع")]
-        public decimal? Height { get; set; }
+        public string? MainImage { get; set; }
 
         public IEnumerable<Category>? ParentCategories { get; set; }
-
-        public IEnumerable<CategoryImage>? Images { get; set; }
     }
 }

@@ -38,7 +38,7 @@ namespace Sofarashel.Data
         #endregion
 
         #region Relations
-        public DbSet<Rel_Product_Category> Rel_Product_Categories { get; set; }
+        public DbSet<Rel_Product_Category> Rel_Product_Category { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

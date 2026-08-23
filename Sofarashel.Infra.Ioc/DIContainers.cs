@@ -22,6 +22,7 @@ namespace Sofarashel.Infra.Ioc
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IPermissionRepository, PermissionRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
             #endregion
 
             #region Services
@@ -30,8 +31,7 @@ namespace Sofarashel.Infra.Ioc
             services.AddScoped<IRoleServices, RoleServices>();
             services.AddScoped<IPermissionService, PermissionService>();
             services.AddScoped<ICategoryServices, CategoryServices>();
-
-
+            services.AddScoped<IProductServices, ProductServices>();
             #endregion
         }
     }

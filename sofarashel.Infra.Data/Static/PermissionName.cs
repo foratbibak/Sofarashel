@@ -26,5 +26,12 @@ namespace Sofarashel.Ifra.Data.Static
         public const string EditRoles = "EditRole";
         public const string DeleteRoles = "DeleteRole";
         #endregion
+
+        #region Products
+        public const string ManageProducts = "ManageProducts";
+        public const string AddProducts = "AddProduct";
+        public const string EditProducts = "EditProduct";
+        public const string DeleteProducts = "DeleteProduct";
+        #endregion
     }
 }

@@ -21,8 +21,8 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
             _categoryServices = categoryServices;
             _env = env;
         }
-
         #region Index
+
         [PermissionChecker(PermissionName.ManageCategories)]
         public async Task<IActionResult> Index()
         {
@@ -40,23 +40,13 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         }
         #endregion
 
-        #region GetProducts
-        [PermissionChecker(PermissionName.ManageCategories)]
-        public async Task<IActionResult> GetProducts(int parentId)
-        {
-            var products = await _categoryServices.GetProductsByParentAsync(parentId);
-            return Json(products);
-        }
-        #endregion
-
-        #region Create
+        #region CreateCategories
         [PermissionChecker(PermissionName.AddCategories)]
         public async Task<IActionResult> Create()
         {
             var parents = await _categoryServices.GetParentCategoryOptionsAsync(null);
             return Json(parents);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [PermissionChecker(PermissionName.AddCategories)]
@@ -72,7 +62,8 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         }
         #endregion
 
-        #region Edit
+
+        #region EditCategory
         [PermissionChecker(PermissionName.EditCategories)]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -106,7 +97,8 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         }
         #endregion
 
-        #region Delete
+
+        #region DeleteCategory
         [HttpPost]
         [ValidateAntiForgeryToken]
         [PermissionChecker(PermissionName.DeleteCategories)]
@@ -116,11 +108,11 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         }
         #endregion
 
-        #region Images
+        #region MainImage
         [HttpPost]
         [ValidateAntiForgeryToken]
         [PermissionChecker(PermissionName.EditCategories)]
-        public async Task<IActionResult> UploadImage(int categoryId, IFormFile file)
+        public async Task<IActionResult> UploadMainImage(int categoryId, IFormFile file)
         {
             if (file == null || !file.ImageValidate())
             {
@@ -138,25 +130,9 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
                 await file.CopyToAsync(stream);
             }
 
-            await _categoryServices.AddImageAsync(categoryId, fileName);
+            await _categoryServices.UpdateMainImageAsync(categoryId, fileName);
 
             return Json(new { success = true, fileName });
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [PermissionChecker(PermissionName.EditCategories)]
-        public async Task DeleteImage(int id)
-        {
-            var image = await _categoryServices.GetImageByIdAsync(id);
-
-            if (image != null)
-            {
-                var filePath = Path.Combine(_env.WebRootPath, "CategoryImages", image.ImageUrl);
-                FileHellper.DeletePath(filePath);
-            }
-
-            await _categoryServices.DeleteImageAsync(id);
         }
         #endregion
     }
