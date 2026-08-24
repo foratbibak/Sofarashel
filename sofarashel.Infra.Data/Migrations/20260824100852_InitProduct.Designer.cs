@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofarashel.Data;
 
@@ -11,9 +12,11 @@ using Sofarashel.Data;
 namespace Sofarashel.Infra.Data.Migrations
 {
     [DbContext(typeof(GallaryDbcontext))]
-    partial class DBConnectionModelSnapshot : ModelSnapshot
+    [Migration("20260824100852_InitProduct")]
+    partial class InitProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
