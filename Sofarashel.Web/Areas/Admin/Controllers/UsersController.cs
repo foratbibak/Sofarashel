@@ -41,25 +41,6 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         }
         #endregion
 
-        #region Details
-        // GET: Admin/Users/Details/5
-        //public async Task<IActionResult> Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var user = await _context.Users
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(user);
-        //}
-        #endregion
 
         #region  Create
         [PermissionChecker(PermissionName.AddUsers)]
@@ -171,5 +152,26 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
 
         //    return RedirectToAction(nameof(Index));
         //}
+
+        #region Details
+        // GET: Admin/Users/Details/5
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var user = await _context.Users
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(user);
+        //}
+        #endregion
+
     }
 }

@@ -37,8 +37,13 @@
                 <div class="card-body">
                     @foreach (var item in Model.permissions.Where(p => p.ParentId == null).ToList())
                     {
+                        var sub1List = Model.permissions.Where(p => p.ParentId == item.Id).ToList();
                         <div class="form-check mb-2">
-                            <input @((Model.PermissonSelectedIds.Any(r => r == item.Id) ? "checked" : "")) class="form-check-input" name="PermissonSelectedIds" type="checkbox" value="@item.Id" id="@item.Id">
+                            <input @((Model.PermissonSelectedIds.Any(r => r == item.Id) ? "checked" : ""))
+                                   class="form-check-input permission-checkbox"
+                                   name="PermissonSelectedIds" type="checkbox"
+                                   value="@item.Id" id="@item.Id"
+                                   data-children="@string.Join(",", sub1List.Select(c => c.Id))">
                             <label class="form-check-label" for="@item.Id">
                                 <i class="bx bx-shield-alt text-info me-1"></i>
                                 @item.DisplayName
@@ -46,20 +51,30 @@
                         </div>
                         <div style="margin-right: 50px;">
 
-                            @foreach (var sub1 in Model.permissions.Where(p => p.ParentId == item.Id))
+                            @foreach (var sub1 in sub1List)
                             {
+                                var sub2List = Model.permissions.Where(p => p.ParentId == sub1.Id).ToList();
                                 <div class="form-check mb-2" style="">
-                                    <input @((Model.PermissonSelectedIds.Any(r => r == sub1.Id) ? "checked" : "")) class="form-check-input" name="PermissonSelectedIds" type="checkbox" value="@sub1.Id" id="@sub1.Id">
+                                    <input @((Model.PermissonSelectedIds.Any(r => r == sub1.Id) ? "checked" : ""))
+                                           class="form-check-input permission-checkbox"
+                                           name="PermissonSelectedIds" type="checkbox"
+                                           value="@sub1.Id" id="@sub1.Id"
+                                           data-parent="@item.Id"
+                                           data-children="@string.Join(",", sub2List.Select(c => c.Id))">
                                     <label class="form-check-label" for="@sub1.Id">
                                         <i class="bx bx-shield-alt text-info me-1"></i>
                                         @sub1.DisplayName
                                     </label>
                                 </div>
                                 <div style="margin-right: 50px;">
-                                    @foreach (var sub2 in Model.permissions.Where(p => p.ParentId == sub1.Id))
+                                    @foreach (var sub2 in sub2List)
                                     {
                                         <div class="form-check mb-2">
-                                            <input @((Model.PermissonSelectedIds.Any(r => r == sub2.Id) ? "checked" : "")) class="form-check-input" name="PermissonSelectedIds" type="checkbox" value="@sub2.Id" id="@sub2.Id">
+                                            <input @((Model.PermissonSelectedIds.Any(r => r == sub2.Id) ? "checked" : ""))
+                                                   class="form-check-input permission-checkbox"
+                                                   name="PermissonSelectedIds" type="checkbox"
+                                                   value="@sub2.Id" id="@sub2.Id"
+                                                   data-parent="@sub1.Id">
                                             <label class="form-check-label" for="@sub2.Id">
                                                 <i class="bx bx-shield-alt text-info me-1"></i>
                                                 @sub2.DisplayName
@@ -81,10 +96,10 @@
 <div>
     <a asp-action="Index">بازگست به لیست</a>
 </div>
-<script src="~/js/permission-tree.js"></script>
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script src="~/js/permission-tree.js"></script>
 }
