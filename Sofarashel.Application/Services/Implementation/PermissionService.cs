@@ -16,8 +16,8 @@ namespace Sofarashel.Application.Services.Implementation
             var user = await userRepository.GetUserFullDataAsync(userId);
             if (user == null) return false;
 
-            var permission=await permissionRepository.GetPermissionByName(permissionName);
-            if (user == null) return false;
+            var permission = await permissionRepository.GetPermissionByName(permissionName);
+            if (permission == null) return false;
             return user.UserInRole.Any(
                 s => permission.RolePermissionMappings.Any(p => p.RoleId == s.RoleId)
                 );
