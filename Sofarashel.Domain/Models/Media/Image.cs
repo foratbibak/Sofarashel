@@ -9,7 +9,7 @@ namespace Sofarashel.Domain.Models.Media
         public string ImageUrl { get; set; }
 
         #region Relations
-        public ICollection<Rel_Image_Product>? ProductLinks { get; set; }
+        public ICollection<Rel_Image_Product>? ProductAttribute { get; set; }
         #endregion
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sofarashel.Domain.Models.Categories;
+using Sofarashel.Domain.Models.Media;
 using Sofarashel.Domain.Models.Permission;
 using Sofarashel.Domain.Models.Products;
 using Sofarashel.Domain.Models.Relations;
@@ -9,7 +10,7 @@ using System.Data;
 
 namespace Sofarashel.Data
 {
-    public class GallaryDbcontext(DbContextOptions<GallaryDbcontext> options):
+    public class GallaryDbcontext(DbContextOptions<GallaryDbcontext> options) :
         DbContext(options)
     {
         #region Users
@@ -34,11 +35,17 @@ namespace Sofarashel.Data
 
         #region Products
         public DbSet<Product> Products { get; set; }
-        public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<AttributeFeature> AttributeFeatures { get; set; }
+        #endregion
+
+        #region Media
+        public DbSet<Image> Images { get; set; }
         #endregion
 
         #region Relations
         public DbSet<Rel_Product_Category> Rel_Product_Category { get; set; }
+        public DbSet<Rel_Image_Product> Rel_Image_Product { get; set; }
+        public DbSet<Rel_AttributesFetures_Product> Rel_AttributesFetures_Product { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -50,7 +57,8 @@ namespace Sofarashel.Data
 
             modelBuilder.Entity<Category>().HasQueryFilter(c => !c.IsDelete);
             modelBuilder.Entity<Product>().HasQueryFilter(p => !p.IsDelete);
-            modelBuilder.Entity<ProductImage>().HasQueryFilter(pi => !pi.IsDelete);
+            modelBuilder.Entity<Image>().HasQueryFilter(i => !i.IsDelete);
+            modelBuilder.Entity<AttributeFeature>().HasQueryFilter(a => !a.IsDelete);
             #endregion
 
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
