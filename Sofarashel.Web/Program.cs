@@ -15,6 +15,7 @@ builder.Services.AddControllersWithViews()
     var converter = new JsonStringEnumConverter();
     options.JsonSerializerOptions.Converters.Add(converter);
 });
+
 #region UniCode
 builder.Services.AddSingleton<HtmlEncoder>(HtmlEncoder.Create(allowedRanges: new[]
 {

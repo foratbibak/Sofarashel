@@ -13,13 +13,6 @@ namespace Sofarashel.Application.Mapper
             {
                 Title = model.Title,
                 Description = model.Description,
-                Material = model.Material,
-                FabricType = model.FabricType,
-                Color = model.Color,
-                Style = model.Style,
-                Length = model.Length,
-                Width = model.Width,
-                Height = model.Height,
                 CreatDate = DateTime.Now,
                 IsDelete = false,
             };
@@ -29,13 +22,6 @@ namespace Sofarashel.Application.Mapper
         {
             product.Title = model.Title;
             product.Description = model.Description;
-            product.Material = model.Material;
-            product.FabricType = model.FabricType;
-            product.Color = model.Color;
-            product.Style = model.Style;
-            product.Length = model.Length;
-            product.Width = model.Width;
-            product.Height = model.Height;
             product.UpdateDate = DateTime.Now;
         }
 
@@ -46,30 +32,30 @@ namespace Sofarashel.Application.Mapper
                 Id = product.Id,
                 Title = product.Title,
                 Description = product.Description,
-                Material = product.Material,
-                FabricType = product.FabricType,
-                Color = product.Color,
-                Style = product.Style,
-                Length = product.Length,
-                Width = product.Width,
-                Height = product.Height,
-                MainImage = product.MainImage,
-                Images = product.Images,
                 CategoryIds = product.ProductCategories?
                     .Select(pc => pc.CategoryId)
                     .ToList() ?? new(),
-            };
-        }
-
-        public static ProductImage MapToImage(int productId, string fileName)
-        {
-            return new ProductImage
-            {
-                ProductId = productId,
-                ImageUrl = fileName,
-                IsMain = false,
-                CreatDate = DateTime.Now,
-                IsDelete = false
+                Attributes = product.ProductAttributes?
+                    .Select(pa => new ProductAttributeViewModel
+                    {
+                        Title = pa.AttributeFeature.AttributTitle,
+                        Value = pa.AttributeFeature.AttributValue
+                    })
+                    .ToList() ?? new(),
+                ExistingImages = product.ProductImages?
+                    .OrderBy(pi => pi.DisplayOrder)
+                    .Select(pi => new ProductImageViewModel
+                    {
+                        ImageId = pi.ImageId,
+                        ImageUrl = pi.Image.ImageUrl,
+                        IsMain = pi.IsMain
+                    })
+                    .ToList() ?? new(),
+                MainImageId = product.ProductImages?
+                    .FirstOrDefault(pi => pi.IsMain)?.ImageId,
+                ImageIds = product.ProductImages?
+                    .Select(pi => pi.ImageId)
+                    .ToList() ?? new(),
             };
         }
     }
