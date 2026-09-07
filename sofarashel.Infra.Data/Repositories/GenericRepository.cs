@@ -12,6 +12,7 @@ namespace Sofarashel.Infra.Data.Repositories
         private readonly GallaryDbcontext _context = context;
         private readonly DbSet<T> _dbSet = context.Set<T>();
 
+
         public async Task<T?> GetByIdAsync(int id)
         {
             return await _dbSet.FindAsync(id);
@@ -42,6 +43,48 @@ namespace Sofarashel.Infra.Data.Repositories
             await _dbSet.AddRangeAsync(entities);
         }
 
+        public async Task SaveAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+
+        public T? GetById(int id)
+        {
+            return _dbSet.Find(id);
+        }
+
+        public IEnumerable<T> GetAll()
+        {
+            return _dbSet.ToList();
+        }
+
+        public IEnumerable<T> Find(Expression<Func<T, bool>> Where)
+        {
+            return _dbSet.Where(Where).ToList();
+        }
+
+        public T? Select(Expression<Func<T, bool>> Where)
+        {
+            return _dbSet.FirstOrDefault(Where);
+        }
+
+        public void Add(T entity)
+        {
+            _dbSet.Add(entity);
+        }
+
+        public void AddRange(IEnumerable<T> entities)
+        {
+            _dbSet.AddRange(entities);
+        }
+
+        public void Save()
+        {
+            _context.SaveChanges();
+        }
+
+
         public void Update(T entity)
         {
             _dbSet.Update(entity);
@@ -55,11 +98,6 @@ namespace Sofarashel.Infra.Data.Repositories
         public void RemoveRange(IEnumerable<T> entities)
         {
             _dbSet.RemoveRange(entities);
-        }
-
-        public async Task SaveAsync()
-        {
-            await _context.SaveChangesAsync();
         }
     }
 }

@@ -6,10 +6,6 @@ using Sofarashel.Data.Contract;
 using Sofarashel.Data.Implementation;
 using Sofarashel.Domain.Contracts;
 using Sofarashel.Infra.Data.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 
 namespace Sofarashel.Infra.Ioc
 {
@@ -23,6 +19,9 @@ namespace Sofarashel.Infra.Ioc
             services.AddScoped<IPermissionRepository, PermissionRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
+
+       
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             #endregion
 
             #region Services
@@ -32,7 +31,7 @@ namespace Sofarashel.Infra.Ioc
             services.AddScoped<IPermissionService, PermissionService>();
             services.AddScoped<ICategoryServices, CategoryServices>();
             services.AddScoped<IProductServices, ProductServices>();
-            #endregion
+            services.AddScoped<IImageServices, ImageServices>();
         }
     }
 }
