@@ -21,5 +21,7 @@ namespace Sofarashel.Domain.Contracts
         Task RemoveAllLinksForImageAsync(int imageId);
 
         Task ReplaceAttributesAsync(int productId, IEnumerable<int> attributeFeatureIds);
+
+        Task RemoveAllLinksForAttributeAsync(int attributeFeatureId);
     }
 }

@@ -12,10 +12,10 @@ using System.Linq;
 namespace Sofarashel.Application.Services.Implementation
 {
     public class ProductServices(
-        IProductRepository _productRepository,
-        IGenericRepository<Product> _genericProductRepository,
-        IGenericRepository<AttributeFeature> _genericAttributeRepository,
-        ICategoryRepository _categoryRepository) : IProductServices
+       IProductRepository _productRepository,
+       IGenericRepository<Product> _genericProductRepository,
+       IAttributeFeatureServices _attributeFeatureServices,
+       ICategoryRepository _categoryRepository) : IProductServices
     {
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
@@ -196,6 +196,12 @@ namespace Sofarashel.Application.Services.Implementation
             await _genericProductRepository.SaveAsync();
         }
 
+        public async Task RemoveAttributeLinksAsync(int attributeFeatureId)
+        {
+            await _productRepository.RemoveAllLinksForAttributeAsync(attributeFeatureId);
+            await _genericProductRepository.SaveAsync();
+        }
+
         #region Helpers
         private async Task<List<int>> ResolveAttributeIdsAsync(List<ProductAttributeViewModel> attributes)
         {
@@ -203,25 +209,8 @@ namespace Sofarashel.Application.Services.Implementation
 
             foreach (var attribute in attributes)
             {
-                var existing = (await _genericAttributeRepository.FindAsync(a =>
-                    a.AttributTitle == attribute.Title && a.AttributValue == attribute.Value))
-                    .FirstOrDefault();
-
-                if (existing == null)
-                {
-                    existing = new AttributeFeature
-                    {
-                        AttributTitle = attribute.Title,
-                        AttributValue = attribute.Value,
-                        CreatDate = DateTime.Now,
-                        IsDelete = false
-                    };
-
-                    await _genericAttributeRepository.AddAsync(existing);
-                    await _genericAttributeRepository.SaveAsync();
-                }
-
-                attributeIds.Add(existing.Id);
+                var resolved = await _attributeFeatureServices.GetOrCreateAsync(attribute.Title, attribute.Value);
+                attributeIds.Add(resolved.Id);
             }
 
             return attributeIds;

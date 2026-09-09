@@ -153,6 +153,14 @@ namespace Sofarashel.Infra.Data.Repositories
 
             await _context.Rel_AttributesFetures_Product.AddRangeAsync(newLinks);
         }
+        public async Task RemoveAllLinksForAttributeAsync(int attributeFeatureId)
+        {
+            var links = await _context.Rel_AttributesFetures_Product
+                .Where(link => link.AttributeFeatureId == attributeFeatureId)
+                .ToListAsync();
+
+            _context.Rel_AttributesFetures_Product.RemoveRange(links);
+        }
         #endregion
     }
 }

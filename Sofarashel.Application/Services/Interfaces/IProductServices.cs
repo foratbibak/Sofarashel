@@ -25,5 +25,8 @@ namespace Sofarashel.Application.Services.Interfaces
         Task UnlinkImageAsync(int productId, int imageId);
 
         Task RemoveImageLinksAsync(int imageId);
+
+
+        Task RemoveAttributeLinksAsync(int attributeFeatureId);
     }
 }
