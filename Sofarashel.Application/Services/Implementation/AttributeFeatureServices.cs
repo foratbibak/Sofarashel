@@ -34,6 +34,26 @@ namespace Sofarashel.Application.Services.Implementation
             return attribute;
         }
 
+
+        public async Task<AttributeFeature?> UpdateAsync(int id, string title, string value)
+        {
+            var attribute = await genericAttributeRepository.SelectAsync(a => a.Id == id && !a.IsDelete);
+            if (attribute is null)
+            {
+                return null;
+            }
+
+            attribute.AttributTitle = title;
+            attribute.AttributValue = value;
+            attribute.UpdateDate = DateTime.Now;
+
+            genericAttributeRepository.Update(attribute);
+            await genericAttributeRepository.SaveAsync();
+
+            return attribute;
+        }
+
+
         public async Task<IEnumerable<AttributeFeature>> SearchAsync(string? keyword)
         {
             if (string.IsNullOrWhiteSpace(keyword))

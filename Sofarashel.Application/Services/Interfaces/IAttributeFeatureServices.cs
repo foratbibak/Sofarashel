@@ -7,6 +7,8 @@ namespace Sofarashel.Application.Services.Interfaces
     {
         Task<AttributeFeature> GetOrCreateAsync(string title, string value);
 
+        Task<AttributeFeature?> UpdateAsync(int id, string title, string value);
+
         Task<IEnumerable<AttributeFeature>> SearchAsync(string? keyword);
 
         Task<AttributeFeature?> GetByIdAsync(int id);
