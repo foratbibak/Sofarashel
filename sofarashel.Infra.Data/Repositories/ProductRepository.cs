@@ -12,39 +12,39 @@ namespace Sofarashel.Infra.Data.Repositories
         public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(int categoryId)
         {
             return await _context.Products
-                .Where(p => p.ProductCategories!.Any(pc => pc.CategoryId == categoryId))
-                .Include(p => p.ProductImages!)
-                    .ThenInclude(pi => pi.Image)
+                .Where(product => product.ProductCategories!.Any(link => link.CategoryId == categoryId))
+                .Include(product => product.ProductImages!)
+                    .ThenInclude(link => link.Image)
                 .ToListAsync();
         }
 
         public async Task<Product?> GetByIdForAdminAsync(int? productId)
         {
             return await _context.Products
-                .Include(p => p.ProductImages!)
-                    .ThenInclude(pi => pi.Image)
-                .Include(p => p.ProductAttributes!)
-                    .ThenInclude(pa => pa.AttributeFeature)
-                .Include(p => p.ProductCategories!)
-                    .ThenInclude(pc => pc.Category)
-                .FirstOrDefaultAsync(p => p.Id == productId);
+                .Include(product => product.ProductImages!)
+                    .ThenInclude(link => link.Image)
+                .Include(product => product.ProductAttributes!)
+                    .ThenInclude(link => link.AttributeFeature)
+                .Include(product => product.ProductCategories!)
+                    .ThenInclude(link => link.Category)
+                .FirstOrDefaultAsync(product => product.Id == productId);
         }
 
         public async Task<Product?> GetProductWithDetailsAsync(int? productId)
         {
             return await _context.Products
-                .Include(p => p.ProductImages!)
-                    .ThenInclude(pi => pi.Image)
-                .Include(p => p.ProductAttributes!)
-                    .ThenInclude(pa => pa.AttributeFeature)
-                .FirstOrDefaultAsync(p => p.Id == productId);
+                .Include(product => product.ProductImages!)
+                    .ThenInclude(link => link.Image)
+                .Include(product => product.ProductAttributes!)
+                    .ThenInclude(link => link.AttributeFeature)
+                .FirstOrDefaultAsync(product => product.Id == productId);
         }
 
         #region Category 
         public async Task SetCategoriesAsync(int productId, IEnumerable<int> categoryIds)
         {
             var existingLinks = await _context.Rel_Product_Category
-                .Where(rpc => rpc.ProductId == productId)
+                .Where(link => link.ProductId == productId)
                 .ToListAsync();
 
             _context.Rel_Product_Category.RemoveRange(existingLinks);
@@ -66,18 +66,18 @@ namespace Sofarashel.Infra.Data.Repositories
         {
             if (isMain)
             {
-                var currentMain = await _context.Rel_Image_Product
-                    .Where(rip => rip.ProductId == productId && rip.IsMain)
+                var currentMainLinks = await _context.Rel_Image_Product
+                    .Where(link => link.ProductId == productId && link.IsMain)
                     .ToListAsync();
 
-                foreach (var link in currentMain)
+                foreach (var link in currentMainLinks)
                 {
                     link.IsMain = false;
                 }
             }
 
             var existingLink = await _context.Rel_Image_Product
-                .FirstOrDefaultAsync(rip => rip.ProductId == productId && rip.ImageId == imageId);
+                .FirstOrDefaultAsync(link => link.ProductId == productId && link.ImageId == imageId);
 
             if (existingLink != null)
             {
@@ -98,12 +98,38 @@ namespace Sofarashel.Infra.Data.Repositories
         public async Task UnlinkImageAsync(int productId, int imageId)
         {
             var link = await _context.Rel_Image_Product
-                .FirstOrDefaultAsync(rip => rip.ProductId == productId && rip.ImageId == imageId);
+                .FirstOrDefaultAsync(link => link.ProductId == productId && link.ImageId == imageId);
 
             if (link != null)
             {
                 _context.Rel_Image_Product.Remove(link);
             }
+        }
+
+        public async Task<int> GetNextImageDisplayOrderAsync(int productId)
+        {
+            var hasAny = await _context.Rel_Image_Product
+                .AnyAsync(link => link.ProductId == productId);
+
+            if (!hasAny)
+            {
+                return 0;
+            }
+
+            var maxOrder = await _context.Rel_Image_Product
+                .Where(link => link.ProductId == productId)
+                .MaxAsync(link => link.DisplayOrder);
+
+            return maxOrder + 1;
+        }
+
+        public async Task RemoveAllLinksForImageAsync(int imageId)
+        {
+            var links = await _context.Rel_Image_Product
+                .Where(link => link.ImageId == imageId)
+                .ToListAsync();
+
+            _context.Rel_Image_Product.RemoveRange(links);
         }
         #endregion
 
@@ -111,7 +137,7 @@ namespace Sofarashel.Infra.Data.Repositories
         public async Task ReplaceAttributesAsync(int productId, IEnumerable<int> attributeFeatureIds)
         {
             var existingLinks = await _context.Rel_AttributesFetures_Product
-                .Where(ra => ra.ProductId == productId)
+                .Where(link => link.ProductId == productId)
                 .ToListAsync();
 
             _context.Rel_AttributesFetures_Product.RemoveRange(existingLinks);

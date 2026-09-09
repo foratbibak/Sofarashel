@@ -3,7 +3,6 @@ using Sofarashel.Application.Mapper;
 using Sofarashel.Application.Services.Interfaces;
 using Sofarashel.Domain.Contracts;
 using Sofarashel.Domain.Enums.Products;
-using Sofarashel.Domain.Models.Media;
 using Sofarashel.Domain.Models.Products;
 using Sofarashel.Domain.ViewModels.Products;
 using System;
@@ -15,7 +14,6 @@ namespace Sofarashel.Application.Services.Implementation
     public class ProductServices(
         IProductRepository _productRepository,
         IGenericRepository<Product> _genericProductRepository,
-        IGenericRepository<Image> _genericImageRepository,
         IGenericRepository<AttributeFeature> _genericAttributeRepository,
         ICategoryRepository _categoryRepository) : IProductServices
     {
@@ -44,7 +42,7 @@ namespace Sofarashel.Application.Services.Implementation
             }
 
             var model = ProductMapper.MapToEditProductViewModel(product);
-            model.CategoryOptions = await _categoryRepository.GetAllCategoriesAsync();
+            model.Categories = await _categoryRepository.GetAllCategoriesAsync();
 
             return model;
         }
@@ -178,32 +176,25 @@ namespace Sofarashel.Application.Services.Implementation
             await _genericProductRepository.SaveAsync();
         }
 
-        #region Image library
-        public async Task<Image> UploadImageToLibraryAsync(string imageUrl)
+        public async Task LinkImageAsync(int productId, int imageId, bool isMain)
         {
-            var image = new Image
-            {
-                ImageUrl = imageUrl,
-                CreatDate = DateTime.Now,
-                IsDelete = false
-            };
+            var displayOrder = await _productRepository.GetNextImageDisplayOrderAsync(productId);
 
-            await _genericImageRepository.AddAsync(image);
-            await _genericImageRepository.SaveAsync();
-
-            return image;
+            await _productRepository.LinkImageAsync(productId, imageId, isMain, displayOrder);
+            await _genericProductRepository.SaveAsync();
         }
 
-        public async Task<IEnumerable<Image>> SearchImagesAsync(string? keyword)
+        public async Task UnlinkImageAsync(int productId, int imageId)
         {
-            if (string.IsNullOrWhiteSpace(keyword))
-            {
-                return await _genericImageRepository.GetAllAsync();
-            }
-
-            return await _genericImageRepository.FindAsync(i => i.ImageUrl.Contains(keyword));
+            await _productRepository.UnlinkImageAsync(productId, imageId);
+            await _genericProductRepository.SaveAsync();
         }
-        #endregion
+
+        public async Task RemoveImageLinksAsync(int imageId)
+        {
+            await _productRepository.RemoveAllLinksForImageAsync(imageId);
+            await _genericProductRepository.SaveAsync();
+        }
 
         #region Helpers
         private async Task<List<int>> ResolveAttributeIdsAsync(List<ProductAttributeViewModel> attributes)

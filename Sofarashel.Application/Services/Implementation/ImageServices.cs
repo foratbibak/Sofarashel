@@ -34,12 +34,12 @@ namespace Sofarashel.Application.Services.Implementation
             return await genericImageRepository.SelectAsync(i => i.Id == id && !i.IsDelete);
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<Image?> DeleteFromLibraryAsync(int id)
         {
             var image = await genericImageRepository.SelectAsync(i => i.Id == id && !i.IsDelete);
             if (image is null)
             {
-                return false;
+                return null;
             }
 
             image.IsDelete = true;
@@ -47,7 +47,7 @@ namespace Sofarashel.Application.Services.Implementation
             genericImageRepository.Update(image);
             await genericImageRepository.SaveAsync();
 
-            return true;
+            return image;
         }
     }
 }

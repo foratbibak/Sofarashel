@@ -42,7 +42,7 @@ namespace Sofarashel.Application.Mapper
                         Value = pa.AttributeFeature.AttributValue
                     })
                     .ToList() ?? new(),
-                ExistingImages = product.ProductImages?
+                Images = product.ProductImages?
                     .OrderBy(pi => pi.DisplayOrder)
                     .Select(pi => new ProductImageViewModel
                     {

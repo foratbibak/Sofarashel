@@ -11,6 +11,6 @@ namespace Sofarashel.Application.Services.Interfaces
 
         Task<Image?> GetByIdAsync(int id);
 
-        Task<bool> DeleteAsync(int id);
+        Task<Image?> DeleteFromLibraryAsync(int id);
     }
 }

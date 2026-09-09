@@ -1,5 +1,4 @@
 ﻿using Sofarashel.Domain.Enums.Products;
-using Sofarashel.Domain.Models.Media;
 using Sofarashel.Domain.Models.Products;
 using Sofarashel.Domain.ViewModels.Products;
 
@@ -21,10 +20,10 @@ namespace Sofarashel.Application.Services.Interfaces
 
         Task DeleteProductAsync(int productId);
 
-        #region Image 
-        Task<Image> UploadImageToLibraryAsync(string imageUrl);
+        Task LinkImageAsync(int productId, int imageId, bool isMain);
 
-        Task<IEnumerable<Image>> SearchImagesAsync(string? keyword);
-        #endregion
+        Task UnlinkImageAsync(int productId, int imageId);
+
+        Task RemoveImageLinksAsync(int imageId);
     }
 }

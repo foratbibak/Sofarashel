@@ -32,6 +32,7 @@ namespace Sofarashel.Infra.Ioc
             services.AddScoped<ICategoryServices, CategoryServices>();
             services.AddScoped<IProductServices, ProductServices>();
             services.AddScoped<IImageServices, ImageServices>();
+            #endregion
         }
     }
 }

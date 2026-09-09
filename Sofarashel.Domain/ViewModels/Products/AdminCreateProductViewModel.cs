@@ -17,12 +17,12 @@ namespace Sofarashel.Domain.ViewModels.Products
         [Required(ErrorMessage = "لطفا حداقل یک {0} را انتخاب فرمایید")]
         public List<int> CategoryIds { get; set; } = new();
 
-        public IEnumerable<Category>? CategoryOptions { get; set; }
+        public IEnumerable<Category>? Categories { get; set; }
 
         [DisplayName("ویژگی‌ها")]
         public List<ProductAttributeViewModel> Attributes { get; set; } = new();
 
-        [DisplayName("عکس‌های انتخاب‌شده از کتابخونه")]
+        [DisplayName("عکس‌های انتخاب‌شده از گالری")]
         public List<int> ImageIds { get; set; } = new();
 
         public int? MainImageId { get; set; }

@@ -19,7 +19,7 @@ namespace Sofarashel.Domain.ViewModels.Products
         [Required(ErrorMessage = "لطفا حداقل یک {0} را انتخاب فرمایید")]
         public List<int> CategoryIds { get; set; } = new();
 
-        public IEnumerable<Category>? CategoryOptions { get; set; }
+        public IEnumerable<Category>? Categories { get; set; }
 
         [DisplayName("ویژگی‌ها")]
         public List<ProductAttributeViewModel> Attributes { get; set; } = new();
@@ -29,6 +29,6 @@ namespace Sofarashel.Domain.ViewModels.Products
 
         public int? MainImageId { get; set; }
 
-        public List<ProductImageViewModel> ExistingImages { get; set; } = new();
+        public List<ProductImageViewModel> Images { get; set; } = new();
     }
 }
