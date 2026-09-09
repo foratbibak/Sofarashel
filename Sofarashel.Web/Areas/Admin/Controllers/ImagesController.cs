@@ -63,7 +63,7 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         #region Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
+        public async Task Delete(int id)
         {
             await _productServices.RemoveImageLinksAsync(id);
 
@@ -74,8 +74,6 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
                 var filePath = Path.Combine(_env.WebRootPath, "ProductImages", image.ImageUrl);
                 FileHellper.DeletePath(filePath);
             }
-
-            return Json(new { success = true });
         }
         #endregion
     }

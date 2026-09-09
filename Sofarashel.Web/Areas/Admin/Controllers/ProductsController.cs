@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Sofarashel.Application.Generator;
-using Sofarashel.Application.Security;
 using Sofarashel.Application.Services.Interfaces;
 using Sofarashel.Domain.Enums.Products;
 using Sofarashel.Domain.ViewModels.Products;
@@ -14,19 +12,13 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
     {
         private readonly IProductServices _productServices;
         private readonly ICategoryServices _categoryServices;
-        private readonly IImageServices _imageServices;
-        private readonly IWebHostEnvironment _env;
 
         public ProductsController(
             IProductServices productServices,
-            ICategoryServices categoryServices,
-            IImageServices imageServices,
-            IWebHostEnvironment env)
+            ICategoryServices categoryServices)
         {
             _productServices = productServices;
             _categoryServices = categoryServices;
-            _imageServices = imageServices;
-            _env = env;
         }
 
         #region Index
@@ -115,33 +107,6 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         #endregion
 
         #region Images
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [PermissionChecker(PermissionName.EditProducts)]
-        public async Task<IActionResult> UploadImage(int productId, IFormFile file)
-        {
-            if (file == null || !file.ImageValidate())
-            {
-                return BadRequest("فرمت تصویر مجاز نیست.");
-            }
-
-            var uploadsFolder = Path.Combine(_env.WebRootPath, "ProductImages");
-            Directory.CreateDirectory(uploadsFolder);
-
-            var fileName = NameGenerator.GenerateUniqName() + Path.GetExtension(file.FileName);
-            var filePath = Path.Combine(uploadsFolder, fileName);
-
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
-
-            var image = await _imageServices.UploadAsync(fileName);
-            await _productServices.LinkImageAsync(productId, image.Id, isMain: false);
-
-            return Json(new { success = true, imageId = image.Id, fileName });
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [PermissionChecker(PermissionName.EditProducts)]
