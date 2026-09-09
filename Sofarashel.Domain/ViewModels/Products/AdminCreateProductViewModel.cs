@@ -20,9 +20,9 @@ namespace Sofarashel.Domain.ViewModels.Products
         public IEnumerable<Category>? Categories { get; set; }
 
         [DisplayName("ویژگی‌ها")]
-        public List<ProductAttributeViewModel> Attributes { get; set; } = new();
+        public List<int> AttributeIds { get; set; } = new();
 
-        [DisplayName("عکس‌های انتخاب‌شده از گالری")]
+        [DisplayName("عکس‌های انتخاب‌شده از کتابخونه")]
         public List<int> ImageIds { get; set; } = new();
 
         public int? MainImageId { get; set; }

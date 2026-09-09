@@ -10,6 +10,7 @@ namespace Sofarashel.Domain.Enums.Products
         Error,
         NotFound,
         CategoryNotFound,
+        AttributeNotFound,
         UnknownError,
         DatabaseError
     }

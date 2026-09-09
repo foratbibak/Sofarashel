@@ -36,12 +36,8 @@ namespace Sofarashel.Application.Mapper
                 CategoryIds = product.ProductCategories?
                     .Select(pc => pc.CategoryId)
                     .ToList() ?? new(),
-                Attributes = product.ProductAttributes?
-                    .Select(pa => new ProductAttributeViewModel
-                    {
-                        Title = pa.AttributeFeature.AttributTitle,
-                        Value = pa.AttributeFeature.AttributValue
-                    })
+                AttributeIds = product.ProductAttributes?
+                    .Select(pa => pa.AttributeFeatureId)
                     .ToList() ?? new(),
                 Images = product.ProductImages?
                     .OrderBy(pi => pi.DisplayOrder)
@@ -71,5 +67,6 @@ namespace Sofarashel.Application.Mapper
 
             return model;
         }
+
     }
 }

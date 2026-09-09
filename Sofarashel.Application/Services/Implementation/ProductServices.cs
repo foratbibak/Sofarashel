@@ -12,10 +12,10 @@ using System.Linq;
 namespace Sofarashel.Application.Services.Implementation
 {
     public class ProductServices(
-       IProductRepository _productRepository,
-       IGenericRepository<Product> _genericProductRepository,
-       IAttributeFeatureServices _attributeFeatureServices,
-       ICategoryRepository _categoryRepository) : IProductServices
+        IProductRepository _productRepository,
+        IGenericRepository<Product> _genericProductRepository,
+        IAttributeFeatureServices _attributeFeatureServices,
+        ICategoryRepository _categoryRepository) : IProductServices
     {
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
@@ -68,6 +68,15 @@ namespace Sofarashel.Application.Services.Implementation
                 }
             }
 
+            foreach (var attributeId in model.AttributeIds)
+            {
+                var attribute = await _attributeFeatureServices.GetByIdAsync(attributeId);
+                if (attribute == null)
+                {
+                    return CreateProductResult.AttributeNotFound;
+                }
+            }
+
             try
             {
                 var addProduct = ProductMapper.MapToProduct(model);
@@ -76,9 +85,7 @@ namespace Sofarashel.Application.Services.Implementation
                 await _genericProductRepository.SaveAsync();
 
                 await _productRepository.SetCategoriesAsync(addProduct.Id, model.CategoryIds);
-
-                var attributeIds = await ResolveAttributeIdsAsync(model.Attributes);
-                await _productRepository.ReplaceAttributesAsync(addProduct.Id, attributeIds);
+                await _productRepository.ReplaceAttributesAsync(addProduct.Id, model.AttributeIds);
 
                 var displayOrder = 0;
                 foreach (var imageId in model.ImageIds.Distinct())
@@ -122,6 +129,15 @@ namespace Sofarashel.Application.Services.Implementation
                 }
             }
 
+            foreach (var attributeId in model.AttributeIds)
+            {
+                var attribute = await _attributeFeatureServices.GetByIdAsync(attributeId);
+                if (attribute == null)
+                {
+                    return AdminEditProductResult.AttributeNotFound;
+                }
+            }
+
             try
             {
                 var editProduct = await _genericProductRepository.GetByIdAsync(model.Id);
@@ -135,9 +151,7 @@ namespace Sofarashel.Application.Services.Implementation
                 _genericProductRepository.Update(editProduct);
 
                 await _productRepository.SetCategoriesAsync(editProduct.Id, model.CategoryIds);
-
-                var attributeIds = await ResolveAttributeIdsAsync(model.Attributes);
-                await _productRepository.ReplaceAttributesAsync(editProduct.Id, attributeIds);
+                await _productRepository.ReplaceAttributesAsync(editProduct.Id, model.AttributeIds);
 
                 var displayOrder = 0;
                 foreach (var imageId in model.ImageIds.Distinct())
@@ -201,20 +215,5 @@ namespace Sofarashel.Application.Services.Implementation
             await _productRepository.RemoveAllLinksForAttributeAsync(attributeFeatureId);
             await _genericProductRepository.SaveAsync();
         }
-
-        #region Helpers
-        private async Task<List<int>> ResolveAttributeIdsAsync(List<ProductAttributeViewModel> attributes)
-        {
-            var attributeIds = new List<int>();
-
-            foreach (var attribute in attributes)
-            {
-                var resolved = await _attributeFeatureServices.GetOrCreateAsync(attribute.Title, attribute.Value);
-                attributeIds.Add(resolved.Id);
-            }
-
-            return attributeIds;
-        }
-        #endregion
     }
 }
