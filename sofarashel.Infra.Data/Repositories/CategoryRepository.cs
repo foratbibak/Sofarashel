@@ -71,6 +71,12 @@ namespace Sofarashel.Infra.Data.Repositories
         public async Task DeleteAsync(int categoryId)
         {
             var category = await GetByIdAsync(categoryId);
+
+            if (category == null)
+            {
+                return;
+            }
+
             await DeleteAsync(category);
         }
 
