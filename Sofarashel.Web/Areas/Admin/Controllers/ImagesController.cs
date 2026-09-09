@@ -26,7 +26,7 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         }
 
         #region Search
-        public async Task<IActionResult> Search(string? keyword)
+        public async Task<IActionResult> Index(string? keyword)
         {
             var images = await _imageServices.SearchAsync(keyword);
             return Json(images);

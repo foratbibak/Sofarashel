@@ -1,4 +1,5 @@
-﻿using Sofarashel.Domain.Models.Products;
+﻿using Sofarashel.Domain.Constants;
+using Sofarashel.Domain.Models.Products;
 using Sofarashel.Domain.ViewModels.Products;
 using System;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace Sofarashel.Application.Mapper
 
         public static AdminEditProductViewModel MapToEditProductViewModel(Product product)
         {
-            return new AdminEditProductViewModel
+            var model = new AdminEditProductViewModel
             {
                 Id = product.Id,
                 Title = product.Title,
@@ -57,6 +58,18 @@ namespace Sofarashel.Application.Mapper
                     .Select(pi => pi.ImageId)
                     .ToList() ?? new(),
             };
+
+            if (!model.Images.Any())
+            {
+                model.Images.Add(new ProductImageViewModel
+                {
+                    ImageId = 0,
+                    ImageUrl = ImageDefaults.NoPhotoFileName,
+                    IsMain = true
+                });
+            }
+
+            return model;
         }
     }
 }
