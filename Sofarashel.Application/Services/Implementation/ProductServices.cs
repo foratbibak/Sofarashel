@@ -5,6 +5,7 @@ using Sofarashel.Domain.Contracts;
 using Sofarashel.Domain.Enums.Products;
 using Sofarashel.Domain.Models.Products;
 using Sofarashel.Domain.ViewModels.Products;
+using Sofarashel.Domain.ViewModels.Products.Sofarashel.Domain.ViewModels.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +44,46 @@ namespace Sofarashel.Application.Services.Implementation
 
             var model = ProductMapper.MapToEditProductViewModel(product);
             model.Categories = await _categoryRepository.GetAllCategoriesAsync();
+
+            return model;
+        }
+
+        public async Task<AdminProductFilterViewModel> AdminFilterAsync(AdminProductFilterViewModel model)
+        {
+            #region Query
+            var query = await _productRepository.FilterAsync();
+            #endregion
+
+            #region Filter
+            if (!string.IsNullOrEmpty(model.Title))
+            {
+                query = query.Where(product => product.Title.Contains(model.Title));
+            }
+
+            if (model.CategoryId.HasValue)
+            {
+                query = query.Where(product => product.ProductCategories!
+                    .Any(link => link.CategoryId == model.CategoryId));
+            }
+            #endregion
+
+            #region Sort
+            query = query.OrderByDescending(product => product.CreatDate);
+            #endregion
+
+            var projected = query.Select(product => new ProductListItemViewModel
+            {
+                Id = product.Id,
+                Title = product.Title,
+                MainImageUrl = product.ProductImages!
+                    .Where(link => link.IsMain)
+                    .Select(link => link.Image.ImageUrl)
+                    .FirstOrDefault()
+            });
+
+            model.Result.PageNumber = model.PageNumber;
+            model.Result.PageSize = model.PageSize;
+            await model.Result.PagingAsync(projected);
 
             return model;
         }

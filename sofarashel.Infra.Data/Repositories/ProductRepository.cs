@@ -40,6 +40,14 @@ namespace Sofarashel.Infra.Data.Repositories
                 .FirstOrDefaultAsync(product => product.Id == productId);
         }
 
+        public async Task<IQueryable<Product>> FilterAsync()
+        {
+            return await Task.FromResult(_context.Products
+                .Include(product => product.ProductImages!)
+                    .ThenInclude(link => link.Image)
+                .AsQueryable());
+        }
+
         #region Category 
         public async Task SetCategoriesAsync(int productId, IEnumerable<int> categoryIds)
         {

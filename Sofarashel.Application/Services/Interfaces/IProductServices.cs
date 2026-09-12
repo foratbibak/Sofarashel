@@ -14,6 +14,8 @@ namespace Sofarashel.Application.Services.Interfaces
 
         Task<AdminEditProductViewModel?> GetEditViewModelAsync(int? id);
 
+        Task<AdminProductFilterViewModel> AdminFilterAsync(AdminProductFilterViewModel model);
+
         Task<CreateProductResult> CreateProductAsync(AdminCreateProductViewModel product);
 
         Task<AdminEditProductResult> EditProductAsync(AdminEditProductViewModel product);

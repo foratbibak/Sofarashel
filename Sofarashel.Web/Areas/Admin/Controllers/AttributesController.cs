@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sofarashel.Application.Services.Interfaces;
+using Sofarashel.Domain.ViewModels.Products;
 using Sofarashel.Ifra.Data.Static;
 using Sofarashel.Web.Attributes;
 
@@ -29,6 +30,15 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         }
         #endregion
 
+        #region Filter
+        [PermissionChecker(PermissionName.ManageProducts)]
+        public async Task<IActionResult> Filter(AdminProductFilterViewModel model)
+        {
+            var result = await _productServices.AdminFilterAsync(model);
+            return Json(result);
+        }
+        #endregion
+
         #region Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -46,6 +56,7 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
             return Json(attribute);
         }
         #endregion
+
         #region Edit
         [PermissionChecker(PermissionName.EditAttribute)]
 

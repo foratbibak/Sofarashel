@@ -12,6 +12,8 @@ namespace Sofarashel.Domain.Contracts
 
         Task SetCategoriesAsync(int productId, IEnumerable<int> categoryIds);
 
+        Task<IQueryable<Product>> FilterAsync();
+
         Task LinkImageAsync(int productId, int imageId, bool isMain, int displayOrder);
 
         Task UnlinkImageAsync(int productId, int imageId);
