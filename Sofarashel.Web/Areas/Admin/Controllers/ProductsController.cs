@@ -23,10 +23,19 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
 
         #region Index
         [PermissionChecker(PermissionName.ManageProducts)]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(AdminProductFilterViewModel model)
         {
-            var products = await _productServices.GetAllProductsAsync();
-            return Json(products);
+            var result = await _productServices.AdminFilterAsync(model);
+            return Json(result);
+        }
+        #endregion
+
+        #region Filter
+        [PermissionChecker(PermissionName.ManageProducts)]
+        public async Task<IActionResult> Filter(AdminProductFilterViewModel model)
+        {
+            var result = await _productServices.AdminFilterAsync(model);
+            return Json(result);
         }
         #endregion
 

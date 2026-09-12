@@ -6,7 +6,6 @@ namespace Sofarashel.Application.Services.Interfaces
 {
     public interface IProductServices
     {
-        Task<IEnumerable<Product>> GetAllProductsAsync();
 
         Task<IEnumerable<Product>> GetProductsByCategoryAsync(int categoryId);
 

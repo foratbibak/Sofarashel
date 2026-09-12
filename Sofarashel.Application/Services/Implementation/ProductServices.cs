@@ -18,10 +18,7 @@ namespace Sofarashel.Application.Services.Implementation
         IAttributeFeatureServices _attributeFeatureServices,
         ICategoryRepository _categoryRepository) : IProductServices
     {
-        public async Task<IEnumerable<Product>> GetAllProductsAsync()
-        {
-            return await _genericProductRepository.GetAllAsync();
-        }
+     
 
         public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(int categoryId)
         {

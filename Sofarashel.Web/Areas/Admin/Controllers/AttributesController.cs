@@ -30,15 +30,6 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         }
         #endregion
 
-        #region Filter
-        [PermissionChecker(PermissionName.ManageProducts)]
-        public async Task<IActionResult> Filter(AdminProductFilterViewModel model)
-        {
-            var result = await _productServices.AdminFilterAsync(model);
-            return Json(result);
-        }
-        #endregion
-
         #region Create
         [HttpPost]
         [ValidateAntiForgeryToken]
