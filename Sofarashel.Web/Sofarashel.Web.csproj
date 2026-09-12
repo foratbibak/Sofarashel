@@ -25,6 +25,8 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="wwwroot\theme-assets\css\" />
+    <Folder Include="wwwroot\theme-assets\js\" />
   </ItemGroup>
 
   <ItemGroup>
