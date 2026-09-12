@@ -26,6 +26,8 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         }
 
         #region Search
+        [PermissionChecker(PermissionName.ManageImages)]
+
         public async Task<IActionResult> Index(string? keyword)
         {
             var images = await _imageServices.SearchAsync(keyword);
@@ -36,6 +38,8 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         #region Upload
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionChecker(PermissionName.AddImage)]
+
         public async Task<IActionResult> Upload(IFormFile file)
         {
             if (file == null || !file.ImageValidate())
@@ -63,6 +67,8 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         #region Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionChecker(PermissionName.DeleteImage)]
+
         public async Task Delete(int id)
         {
             await _productServices.RemoveImageLinksAsync(id);

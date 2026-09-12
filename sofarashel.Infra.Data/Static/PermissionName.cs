@@ -33,5 +33,19 @@ namespace Sofarashel.Ifra.Data.Static
         public const string EditProducts = "EditProduct";
         public const string DeleteProducts = "DeleteProduct";
         #endregion
+
+        #region Images
+        public const string ManageImages = "ManageImages";
+        public const string AddImage = "AddImage";
+        public const string EditImage = "EditImage";
+        public const string DeleteImage = "DeleteImage";
+        #endregion
+
+        #region Attributes
+        public const string ManageAttributes = "ManageAttributes";
+        public const string AddAttribute = "AddAttribute";
+        public const string EditAttribute = "EditAttribute";
+        public const string DeleteAttribute = "DeleteAttribute";
+        #endregion
     }
 }

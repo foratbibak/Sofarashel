@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sofarashel.Application.Services.Interfaces;
+using Sofarashel.Ifra.Data.Static;
+using Sofarashel.Web.Attributes;
 
 namespace Sofarashel.Web.Areas.Admin.Controllers
 {
@@ -18,6 +20,8 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         }
 
         #region Index
+        [PermissionChecker(PermissionName.ManageAttributes)]
+
         public async Task<IActionResult> Index(string? keyword)
         {
             var attributes = await _attributeFeatureServices.SearchAsync(keyword);
@@ -28,6 +32,9 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         #region Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+
+        [PermissionChecker(PermissionName.AddAttribute)]
+
         public async Task<IActionResult> Create(string title, string value)
         {
             if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(value))
@@ -40,6 +47,8 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         }
         #endregion
         #region Edit
+        [PermissionChecker(PermissionName.EditAttribute)]
+
         public async Task<IActionResult> Edit(int id)
         {
             var attribute = await _attributeFeatureServices.GetByIdAsync(id);
@@ -54,6 +63,8 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionChecker(PermissionName.EditAttribute)]
+
         public async Task<IActionResult> Edit(int id, string title, string value)
         {
             if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(value))
@@ -75,6 +86,8 @@ namespace Sofarashel.Web.Areas.Admin.Controllers
         #region Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionChecker(PermissionName.DeleteAttribute)]
+
         public async Task Delete(int id)
         {
             await _productServices.RemoveAttributeLinksAsync(id);

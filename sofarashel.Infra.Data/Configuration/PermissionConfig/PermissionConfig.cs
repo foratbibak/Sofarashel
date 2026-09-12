@@ -41,7 +41,16 @@ namespace Sofarashel.Ifra.Data.Configuration.PermissionConfig
                 new Permission { Id = 13, UniqName = "ManageProducts", DisplayName = "مدیریت محصولات", ParentId = null, CreatDate = seedDate, IsDelete = false },
                 new Permission { Id = 14, UniqName = "AddProduct", DisplayName = "افزودن محصول", ParentId = 13, CreatDate = seedDate, IsDelete = false },
                 new Permission { Id = 15, UniqName = "EditProduct", DisplayName = "ویرایش محصول", ParentId = 13, CreatDate = seedDate, IsDelete = false },
-                new Permission { Id = 16, UniqName = "DeleteProduct", DisplayName = "حذف محصول", ParentId = 13, CreatDate = seedDate, IsDelete = false }
+                new Permission { Id = 16, UniqName = "DeleteProduct", DisplayName = "حذف محصول", ParentId = 13, CreatDate = seedDate, IsDelete = false },
+                new Permission { Id = 17, UniqName = "ManageImages", DisplayName = "مدیریت گالری", ParentId = null, CreatDate = seedDate, IsDelete = false },
+                new Permission { Id = 18, UniqName = "AddImage", DisplayName = "افزودن عکس", ParentId = 17, CreatDate = seedDate, IsDelete = false },
+                new Permission { Id = 19, UniqName = "EditImage", DisplayName = "ویرایش عکس", ParentId = 17, CreatDate = seedDate, IsDelete = false },
+                new Permission { Id = 20, UniqName = "DeleteImage", DisplayName = "حذف عکس", ParentId = 17, CreatDate = seedDate, IsDelete = false },
+
+                new Permission { Id = 21, UniqName = "ManageAttributes", DisplayName = "مدیریت ویژگی‌ها", ParentId = null, CreatDate = seedDate, IsDelete = false },
+                new Permission { Id = 22, UniqName = "AddAttribute", DisplayName = "افزودن ویژگی", ParentId = 21, CreatDate = seedDate, IsDelete = false },
+                new Permission { Id = 23, UniqName = "EditAttribute", DisplayName = "ویرایش ویژگی", ParentId = 21, CreatDate = seedDate, IsDelete = false },
+                new Permission { Id = 24, UniqName = "DeleteAttribute", DisplayName = "حذف ویژگی", ParentId = 21, CreatDate = seedDate, IsDelete = false }
             );
             #endregion
         }
