@@ -1,18 +1,18 @@
-﻿using Sofarashel.Domain.Models.Products;
+﻿using Sofarashel.Domain.ViewModels.Attributes;
 using System.Collections.Generic;
 
 namespace Sofarashel.Application.Services.Interfaces
 {
     public interface IAttributeFeatureServices
     {
-        Task<AttributeFeature> GetOrCreateAsync(string title, string value);
+        Task<AttributeFeatureViewModel> GetOrCreateAsync(string title, string value);
 
-        Task<AttributeFeature?> UpdateAsync(int id, string title, string value);
+        Task<IEnumerable<AttributeFeatureViewModel>> SearchAsync(string? keyword);
 
-        Task<IEnumerable<AttributeFeature>> SearchAsync(string? keyword);
+        Task<AttributeFeatureViewModel?> GetByIdAsync(int id);
 
-        Task<AttributeFeature?> GetByIdAsync(int id);
+        Task<AttributeFeatureViewModel?> UpdateAsync(int id, string title, string value);
 
-        Task<AttributeFeature?> DeleteFromLibraryAsync(int id);
+        Task<AttributeFeatureViewModel?> DeleteFromLibraryAsync(int id);
     }
 }
