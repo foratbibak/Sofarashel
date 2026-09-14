@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Sofarashel.Ifra.Data.Configuration.PermissionConfig
+namespace Sofarashel.Infra.Data.Configuration.PermissionConfig
 {
     public class PermissionConfig : IEntityTypeConfiguration<Permission>
     {

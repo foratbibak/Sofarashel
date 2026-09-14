@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Sofarashel.Ifra.Data.Static
+namespace Sofarashel.Infra.Data.Static
 {
     public class PermissionName
     {

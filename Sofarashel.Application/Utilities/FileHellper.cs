@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Bibaket.Application.Utilities
+namespace Sofarashel.Application.Utilities
 {
     public class FileHellper
     {

@@ -1,4 +1,4 @@
-﻿using Bibaket.Application.Services.Interfaces;
+﻿using Sofarashel.Application.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Sofarashel.Application.Services.Implementation;
 using Sofarashel.Application.Services.Interfaces;

@@ -1,4 +1,4 @@
-﻿using Bibaket.Application.Services.Interfaces;
+﻿using Sofarashel.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +7,7 @@ using Sofarashel.Data;
 using Sofarashel.Domain.Enums.User;
 using Sofarashel.Domain.ViewModels.User;
 using Sofarashel.Enum.User;
-using Sofarashel.Ifra.Data.Static;
+using Sofarashel.Infra.Data.Static;
 using Sofarashel.Models.User;
 using Sofarashel.ViewModels.Users;
 using Sofarashel.Web.Attributes;

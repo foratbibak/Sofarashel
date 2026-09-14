@@ -1,11 +1,11 @@
-﻿using Bibaket.Application.Utilities;
+﻿using Sofarashel.Application.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Sofarashel.Application.Generator;
 using Sofarashel.Application.Security;
 using Sofarashel.Application.Services.Interfaces;
 using Sofarashel.Domain.Enums.Categories;
 using Sofarashel.Domain.ViewModels.Categories;
-using Sofarashel.Ifra.Data.Static;
+using Sofarashel.Infra.Data.Static;
 using Sofarashel.Web.Attributes;
 
 namespace Sofarashel.Web.Areas.Admin.Controllers

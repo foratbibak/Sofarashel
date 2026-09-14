@@ -2,7 +2,7 @@
 using Sofarashel.Application.Services.Interfaces;
 using Sofarashel.Domain.Enums.Products;
 using Sofarashel.Domain.ViewModels.Products;
-using Sofarashel.Ifra.Data.Static;
+using Sofarashel.Infra.Data.Static;
 using Sofarashel.Web.Attributes;
 
 namespace Sofarashel.Web.Areas.Admin.Controllers

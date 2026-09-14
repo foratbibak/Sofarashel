@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Bibaket.Application.Services.Interfaces
+namespace Sofarashel.Application.Services.Interfaces
 {
     public interface IRoleServices
     {
