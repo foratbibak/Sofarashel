@@ -1,6 +1,8 @@
-﻿using Sofarashel.Application.Services.Interfaces;
+﻿using Sofarashel.Application.Mapper;
+using Sofarashel.Application.Services.Interfaces;
 using Sofarashel.Domain.Contracts;
 using Sofarashel.Domain.Models.Products;
+using Sofarashel.Domain.ViewModels.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,36 +11,59 @@ namespace Sofarashel.Application.Services.Implementation
 {
     public class AttributeFeatureServices(IGenericRepository<AttributeFeature> genericAttributeRepository) : IAttributeFeatureServices
     {
-        public async Task<AttributeFeature> GetOrCreateAsync(string title, string value)
+        public async Task<AttributeFeatureViewModel> GetOrCreateAsync(string title, string value)
         {
-            var existing = (await genericAttributeRepository.FindAsync(a =>
+            var attribute = (await genericAttributeRepository.FindAsync(a =>
                 a.AttributTitle == title && a.AttributValue == value))
                 .FirstOrDefault();
 
-            if (existing != null)
+            if (attribute == null)
             {
-                return existing;
+                attribute = new AttributeFeature
+                {
+                    AttributTitle = title,
+                    AttributValue = value,
+                    CreatDate = DateTime.Now,
+                    IsDelete = false
+                };
+
+                await genericAttributeRepository.AddAsync(attribute);
+                await genericAttributeRepository.SaveAsync();
             }
 
-            var attribute = new AttributeFeature
-            {
-                AttributTitle = title,
-                AttributValue = value,
-                CreatDate = DateTime.Now,
-                IsDelete = false
-            };
-
-            await genericAttributeRepository.AddAsync(attribute);
-            await genericAttributeRepository.SaveAsync();
-
-            return attribute;
+            return AttributeFeatureMapper.MapToViewModel(attribute);
         }
 
-
-        public async Task<AttributeFeature?> UpdateAsync(int id, string title, string value)
+        public async Task<IEnumerable<AttributeFeatureViewModel>> SearchAsync(string? keyword)
         {
-            var attribute = await genericAttributeRepository.SelectAsync(a => a.Id == id && !a.IsDelete);
-            if (attribute is null)
+            if (string.IsNullOrWhiteSpace(keyword))
+            {
+                var attributes = await genericAttributeRepository.GetAllAsync();
+                return AttributeFeatureMapper.MapToViewModelList(attributes);
+            }
+
+            var filteredAttributes = await genericAttributeRepository.FindAsync(attribute =>
+                attribute.AttributTitle.Contains(keyword) || attribute.AttributValue.Contains(keyword));
+            return AttributeFeatureMapper.MapToViewModelList(filteredAttributes);
+        }
+
+        public async Task<AttributeFeatureViewModel?> GetByIdAsync(int id)
+        {
+            var attribute = await genericAttributeRepository.GetByIdAsync(id);
+
+            if (attribute == null)
+            {
+                return null;
+            }
+
+            return AttributeFeatureMapper.MapToViewModel(attribute);
+        }
+
+        public async Task<AttributeFeatureViewModel?> UpdateAsync(int id, string title, string value)
+        {
+            var attribute = await genericAttributeRepository.GetByIdAsync(id);
+
+            if (attribute == null)
             {
                 return null;
             }
@@ -50,30 +75,14 @@ namespace Sofarashel.Application.Services.Implementation
             genericAttributeRepository.Update(attribute);
             await genericAttributeRepository.SaveAsync();
 
-            return attribute;
+            return AttributeFeatureMapper.MapToViewModel(attribute);
         }
 
-
-        public async Task<IEnumerable<AttributeFeature>> SearchAsync(string? keyword)
+        public async Task<AttributeFeatureViewModel?> DeleteFromLibraryAsync(int id)
         {
-            if (string.IsNullOrWhiteSpace(keyword))
-            {
-                return await genericAttributeRepository.FindAsync(a => !a.IsDelete);
-            }
+            var attribute = await genericAttributeRepository.GetByIdAsync(id);
 
-            return await genericAttributeRepository.FindAsync(a =>
-                !a.IsDelete && (a.AttributTitle.Contains(keyword) || a.AttributValue.Contains(keyword)));
-        }
-
-        public async Task<AttributeFeature?> GetByIdAsync(int id)
-        {
-            return await genericAttributeRepository.SelectAsync(a => a.Id == id && !a.IsDelete);
-        }
-
-        public async Task<AttributeFeature?> DeleteFromLibraryAsync(int id)
-        {
-            var attribute = await genericAttributeRepository.SelectAsync(a => a.Id == id && !a.IsDelete);
-            if (attribute is null)
+            if (attribute == null)
             {
                 return null;
             }
@@ -83,7 +92,7 @@ namespace Sofarashel.Application.Services.Implementation
             genericAttributeRepository.Update(attribute);
             await genericAttributeRepository.SaveAsync();
 
-            return attribute;
+            return AttributeFeatureMapper.MapToViewModel(attribute);
         }
     }
 }

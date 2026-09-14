@@ -1,16 +1,16 @@
-﻿using Sofarashel.Domain.Models.Media;
+﻿using Sofarashel.Domain.ViewModels.Media;
 using System.Collections.Generic;
 
 namespace Sofarashel.Application.Services.Interfaces
 {
     public interface IImageServices
     {
-        Task<Image> UploadAsync(string imageUrl);
+        Task<ImageViewModel> UploadAsync(string imageUrl);
 
-        Task<IEnumerable<Image>> SearchAsync(string? keyword);
+        Task<IEnumerable<ImageViewModel>> SearchAsync(string? keyword);
 
-        Task<Image?> GetByIdAsync(int id);
+        Task<ImageViewModel?> GetByIdAsync(int id);
 
-        Task<Image?> DeleteFromLibraryAsync(int id);
+        Task<ImageViewModel?> DeleteFromLibraryAsync(int id);
     }
 }

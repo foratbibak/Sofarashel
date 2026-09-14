@@ -2,42 +2,54 @@
 using Sofarashel.Application.Services.Interfaces;
 using Sofarashel.Domain.Contracts;
 using Sofarashel.Domain.Models.Media;
+using Sofarashel.Domain.ViewModels.Media;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Sofarashel.Application.Services.Implementation
 {
     public class ImageServices(IGenericRepository<Image> genericImageRepository) : IImageServices
     {
-        public async Task<Image> UploadAsync(string imageUrl)
+        public async Task<ImageViewModel> UploadAsync(string imageUrl)
         {
             var image = ImageMapper.MapToImage(imageUrl);
 
             await genericImageRepository.AddAsync(image);
             await genericImageRepository.SaveAsync();
 
-            return image;
+            return ImageMapper.MapToViewModel(image);
         }
 
-        public async Task<IEnumerable<Image>> SearchAsync(string? keyword)
+        public async Task<IEnumerable<ImageViewModel>> SearchAsync(string? keyword)
         {
             if (string.IsNullOrWhiteSpace(keyword))
             {
-                return await genericImageRepository.FindAsync(i => !i.IsDelete);
+                var images = await genericImageRepository.GetAllAsync();
+                return ImageMapper.MapToViewModelList(images);
             }
 
-            return await genericImageRepository.FindAsync(i => !i.IsDelete && i.ImageUrl.Contains(keyword));
+            var filteredImages = await genericImageRepository.FindAsync(image => image.ImageUrl.Contains(keyword));
+            return ImageMapper.MapToViewModelList(filteredImages);
         }
 
-        public async Task<Image?> GetByIdAsync(int id)
+        public async Task<ImageViewModel?> GetByIdAsync(int id)
         {
-            return await genericImageRepository.SelectAsync(i => i.Id == id && !i.IsDelete);
+            var image = await genericImageRepository.GetByIdAsync(id);
+
+            if (image == null)
+            {
+                return null;
+            }
+
+            return ImageMapper.MapToViewModel(image);
         }
 
-        public async Task<Image?> DeleteFromLibraryAsync(int id)
+        public async Task<ImageViewModel?> DeleteFromLibraryAsync(int id)
         {
-            var image = await genericImageRepository.SelectAsync(i => i.Id == id && !i.IsDelete);
-            if (image is null)
+            var image = await genericImageRepository.GetByIdAsync(id);
+
+            if (image == null)
             {
                 return null;
             }
@@ -47,7 +59,7 @@ namespace Sofarashel.Application.Services.Implementation
             genericImageRepository.Update(image);
             await genericImageRepository.SaveAsync();
 
-            return image;
+            return ImageMapper.MapToViewModel(image);
         }
     }
 }
