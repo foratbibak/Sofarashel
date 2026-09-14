@@ -1,5 +1,4 @@
 ﻿using Sofarashel.Domain.ViewModels.Common;
-using Sofarashel.Domain.ViewModels.Products.Sofarashel.Domain.ViewModels.Products;
 
 namespace Sofarashel.Domain.ViewModels.Products
 {
