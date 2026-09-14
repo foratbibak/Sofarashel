@@ -13,3 +13,4 @@ namespace Sofarashel.Domain.ViewModels.Products
             public string? MainImageUrl { get; set; }
         }
     }
+}
