@@ -5,7 +5,6 @@ using Sofarashel.Domain.Contracts;
 using Sofarashel.Domain.Enums.Products;
 using Sofarashel.Domain.Models.Products;
 using Sofarashel.Domain.ViewModels.Products;
-using Sofarashel.Domain.ViewModels.Products.Sofarashel.Domain.ViewModels.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
