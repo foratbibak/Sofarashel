@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Sofarashel.Domain.Models.AttributeFeatures;
 using Sofarashel.Domain.Models.Categories;
 using Sofarashel.Domain.Models.Media;
 using Sofarashel.Domain.Models.Permission;
@@ -35,6 +36,9 @@ namespace Sofarashel.Data
 
         #region Products
         public DbSet<Product> Products { get; set; }
+        #endregion
+
+        #region AttributeFeatures
         public DbSet<AttributeFeature> AttributeFeatures { get; set; }
         #endregion
 

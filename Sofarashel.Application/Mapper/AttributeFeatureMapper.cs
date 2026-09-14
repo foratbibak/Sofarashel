@@ -1,4 +1,4 @@
-﻿using Sofarashel.Domain.Models.Products;
+﻿using Sofarashel.Domain.Models.AttributeFeatures;
 using Sofarashel.Domain.ViewModels.Attributes;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +12,8 @@ namespace Sofarashel.Application.Mapper
             return new AttributeFeatureViewModel
             {
                 Id = attribute.Id,
-                Title = attribute.AttributTitle,
-                Value = attribute.AttributValue
+                Title = attribute.AttributeTitle,
+                Value = attribute.AttributeValue
             };
         }
 

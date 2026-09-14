@@ -1,7 +1,7 @@
 ﻿using Sofarashel.Application.Mapper;
 using Sofarashel.Application.Services.Interfaces;
 using Sofarashel.Domain.Contracts;
-using Sofarashel.Domain.Models.Products;
+using Sofarashel.Domain.Models.AttributeFeatures;
 using Sofarashel.Domain.ViewModels.Attributes;
 using System;
 using System.Collections.Generic;
@@ -14,15 +14,15 @@ namespace Sofarashel.Application.Services.Implementation
         public async Task<AttributeFeatureViewModel> GetOrCreateAsync(string title, string value)
         {
             var attribute = (await genericAttributeRepository.FindAsync(a =>
-                a.AttributTitle == title && a.AttributValue == value))
+                a.AttributeTitle == title && a.AttributeValue == value))
                 .FirstOrDefault();
 
             if (attribute == null)
             {
                 attribute = new AttributeFeature
                 {
-                    AttributTitle = title,
-                    AttributValue = value,
+                    AttributeTitle = title,
+                    AttributeValue = value,
                     CreatDate = DateTime.Now,
                     IsDelete = false
                 };
@@ -43,7 +43,7 @@ namespace Sofarashel.Application.Services.Implementation
             }
 
             var filteredAttributes = await genericAttributeRepository.FindAsync(attribute =>
-                attribute.AttributTitle.Contains(keyword) || attribute.AttributValue.Contains(keyword));
+                attribute.AttributeTitle.Contains(keyword) || attribute.AttributeValue.Contains(keyword));
             return AttributeFeatureMapper.MapToViewModelList(filteredAttributes);
         }
 
@@ -68,8 +68,8 @@ namespace Sofarashel.Application.Services.Implementation
                 return null;
             }
 
-            attribute.AttributTitle = title;
-            attribute.AttributValue = value;
+            attribute.AttributeTitle = title;
+            attribute.AttributeValue = value;
             attribute.UpdateDate = DateTime.Now;
 
             genericAttributeRepository.Update(attribute);

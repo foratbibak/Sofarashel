@@ -1,4 +1,5 @@
-﻿using Sofarashel.Domain.Models.Products;
+﻿using Sofarashel.Domain.Models.AttributeFeatures;
+using Sofarashel.Domain.Models.Products;
 
 namespace Sofarashel.Domain.Models.Relations
 {
