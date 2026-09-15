@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace ShopStock.Application.Utilities
+namespace Sofarashel.Application.Utilities
 {
 
     public static class Helpers
