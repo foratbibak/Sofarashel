@@ -34,24 +34,24 @@ namespace Sofarashel.Application.Mapper
                 Title = product.Title,
                 Description = product.Description,
                 CategoryIds = product.ProductCategories?
-                    .Select(pc => pc.CategoryId)
+                    .Select(c => c.CategoryId)
                     .ToList() ?? new(),
                 AttributeIds = product.ProductAttributes?
-                    .Select(pa => pa.AttributeFeatureId)
+                    .Select(a => a.AttributeFeatureId)
                     .ToList() ?? new(),
                 Images = product.ProductImages?
-                    .OrderBy(pi => pi.DisplayOrder)
-                    .Select(pi => new ProductImageViewModel
+                    .OrderBy(i => i.DisplayOrder)
+                    .Select(i => new ProductImageViewModel
                     {
-                        ImageId = pi.ImageId,
-                        ImageUrl = pi.Image.ImageUrl,
-                        IsMain = pi.IsMain
+                        ImageId = i.ImageId,
+                        ImageUrl = i.Image.ImageUrl,
+                        IsMain = i.IsMain
                     })
                     .ToList() ?? new(),
                 MainImageId = product.ProductImages?
-                    .FirstOrDefault(pi => pi.IsMain)?.ImageId,
+                    .FirstOrDefault(i => i.IsMain)?.ImageId,
                 ImageIds = product.ProductImages?
-                    .Select(pi => pi.ImageId)
+                    .Select(i => i.ImageId)
                     .ToList() ?? new(),
             };
 
@@ -67,6 +67,5 @@ namespace Sofarashel.Application.Mapper
 
             return model;
         }
-
     }
 }

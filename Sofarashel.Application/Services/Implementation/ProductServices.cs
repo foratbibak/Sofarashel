@@ -53,35 +53,33 @@ namespace Sofarashel.Application.Services.Implementation
             #region Filter
             if (!string.IsNullOrEmpty(model.Title))
             {
-                query = query.Where(product => product.Title.Contains(model.Title));
+                query = query.Where(p => p.Title.Contains(model.Title));
             }
 
             if (model.CategoryId.HasValue)
             {
-                query = query.Where(product => product.ProductCategories!
-                    .Any(link => link.CategoryId == model.CategoryId));
+                query = query.Where(p => p.ProductCategories!
+                    .Any(c => c.CategoryId == model.CategoryId));
             }
             #endregion
 
             #region Sort
-            query = query.OrderByDescending(product => product.CreatDate);
+            query = query.OrderByDescending(p => p.CreatDate);
             #endregion
 
-            var projected = query.Select(product => new ProductListItemViewModel
+            var projected = query.Select(p => new ProductListItemViewModel
             {
-                Id = product.Id,
-                Title = product.Title,
-                MainImageUrl = product.ProductImages!
-                    .Where(link => link.IsMain)
-                    .Select(link => link.Image.ImageUrl)
+                Id = p.Id,
+                Title = p.Title,
+                MainImageUrl = p.ProductImages!
+                    .Where(i => i.IsMain)
+                    .Select(i => i.Image.ImageUrl)
                     .FirstOrDefault()
             });
 
             model.Result.PageNumber = model.PageNumber;
             model.Result.PageSize = model.PageSize;
             await model.Result.PagingAsync(projected);
-
-            return model;
         }
 
         public async Task<CreateProductResult> CreateProductAsync(AdminCreateProductViewModel model)
